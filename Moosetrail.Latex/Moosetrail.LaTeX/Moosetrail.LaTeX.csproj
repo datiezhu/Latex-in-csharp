@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5A99A0A9-FEA0-4F38-B4CE-768548C0BAE3}</ProjectGuid>
+    <ProjectGuid>{577B46E8-5BEF-4186-925D-573C14E18D9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Moosetrail.LaTeX.Elements</RootNamespace>
-    <AssemblyName>Moosetrail.LaTeX.Elements</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Moosetrail.LaTeX</RootNamespace>
+    <AssemblyName>Moosetrail.LaTeX</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeParser.cs" />
+    <Compile Include="ContentParser.cs" />
+    <Compile Include="Elements\Chapter.cs" />
+    <Compile Include="Elements\CustomCommand.cs" />
+    <Compile Include="Elements\Document.cs" />
+    <Compile Include="Elements\DocumentClass.cs" />
+    <Compile Include="Elements\Enumerate.cs" />
+    <Compile Include="Elements\LaTeXElements.cs" />
+    <Compile Include="Elements\Section.cs" />
+    <Compile Include="Elements\TextBody.cs" />
+    <Compile Include="LaTeXElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

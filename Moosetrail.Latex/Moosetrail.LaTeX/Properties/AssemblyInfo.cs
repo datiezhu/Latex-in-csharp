@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Moosetrail.LaTeX.Parser")]
+[assembly: AssemblyTitle("Moosetrail.LaTeX")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Moosetrail.LaTeX.Parser")]
+[assembly: AssemblyProduct("Moosetrail.LaTeX")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("22ad88fb-558d-4b4b-a132-6384f5b07c1b")]
+[assembly: Guid("577b46e8-5bef-4186-925d-573c14e18d9d")]
 
 // Version information for an assembly consists of the following four values:
 //
