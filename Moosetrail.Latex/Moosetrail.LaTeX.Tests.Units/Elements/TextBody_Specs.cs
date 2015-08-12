@@ -62,5 +62,42 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         }
 
         #endregion TheText
+
+        #region Equals
+
+        [Test]
+        public void equals_should_return_true_if_same_text()
+        {
+            // Given 
+            var other = setSutAndOtherToSame();
+
+            // Then
+            Assert.AreEqual(SUT, other);
+        }
+
+        [Test]
+        public void equals_should_return_false_for_different_text()
+        {
+            // Given 
+            var other = setSutAndOtherToSame();
+            other.TheText = "My awesome text";
+
+            // Then
+            Assert.AreNotEqual(SUT, other);
+        }
+
+        #endregion Equals
+
+        #region TestHelpers
+
+        private TextBody setSutAndOtherToSame()
+        {
+            SUT = new TextBody("My text");
+            var other = new TextBody("My text");
+            return other;
+        }
+
+
+        #endregion TestHelpers
     }
 } 

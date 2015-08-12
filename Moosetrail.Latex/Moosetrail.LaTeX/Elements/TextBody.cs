@@ -22,10 +22,36 @@
         public string TheText
         {
             get { return _theText; }
-            set
-            {
-               // _theText = StandardLaTeXParser.RemoveNewlines(value.Trim());
-            }
+            set { _theText = value.Trim(); }
         }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            return equals(obj as TextBody);
+        }
+
+        protected bool equals(TextBody other)
+        {
+            return other != null && TheText == other.TheText;
+        }
+
+        /// <summary>
+        /// Serves as the default hash function. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current object.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return (_theText != null ? _theText.GetHashCode() : 0);
+        }
+
     }
 }

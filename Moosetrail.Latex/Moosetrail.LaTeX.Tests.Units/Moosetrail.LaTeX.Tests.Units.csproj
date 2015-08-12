@@ -58,6 +58,7 @@
     <Compile Include="Elements\CustomCommand_Specs.cs" />
     <Compile Include="Elements\DocumentClass_Specs.cs" />
     <Compile Include="Elements\Document_Specs.cs" />
+    <Compile Include="Elements\Enumerate_Specs.cs" />
     <Compile Include="Elements\Section_Specs.cs" />
     <Compile Include="Elements\TextBody_Specs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
