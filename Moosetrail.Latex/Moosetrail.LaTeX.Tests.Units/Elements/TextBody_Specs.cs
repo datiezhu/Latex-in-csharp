@@ -88,6 +88,23 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
         #endregion Equals
 
+        #region ToString
+
+        [Test]
+        public void toString_should_return_the_string()
+        {
+            // Given 
+            SUT.TheText = "My text";
+
+            // When
+            var result = SUT.ToString();
+
+            // Then
+            Assert.AreEqual("My text", result);
+        }
+
+        #endregion ToString
+
         #region TestHelpers
 
         private TextBody setSutAndOtherToSame()

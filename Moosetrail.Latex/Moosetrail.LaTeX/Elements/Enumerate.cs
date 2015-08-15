@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Moosetrail.LaTeX.Elements
 {
@@ -22,6 +23,21 @@ namespace Moosetrail.LaTeX.Elements
         public Enumerate()
         {
             ItemList = new List<LaTeXElement>();
+        }
+
+        /// <summary>
+        /// Creates a new instance of the Enumerate class and parses code into it
+        /// </summary>
+        /// <param name="code">The code to parse into the object</param>
+        public Enumerate(string code)
+            :this()
+        {
+            var listBody = Regex.Match(code, Pattern);
+            var itemParts = listBody.Groups[1].Value.Split(new[] {@"\item"}, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var itemPart in itemParts.Where(itemPart => !String.IsNullOrWhiteSpace(itemPart)))
+            {
+                _itemList.Add(new TextBody(itemPart.Trim()));
+            }
         }
 
         /// <summary>
@@ -61,7 +77,7 @@ namespace Moosetrail.LaTeX.Elements
         /// <summary>
         /// Get the pattern that identifies lists
         /// </summary>
-        public static string Pattern = @"(?s)\\begin{enumerate}(.*?)\\end{enumerate}";
+        public static string Pattern = @"\\begin{enumerate}(.*?)\\end{enumerate}";
 
         internal void ParseCode(string code)
         {

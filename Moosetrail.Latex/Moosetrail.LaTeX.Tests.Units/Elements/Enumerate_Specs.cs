@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Moosetrail.LaTeX.Elements;
 using NUnit.Framework;
 
@@ -40,6 +41,28 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         }
 
         #endregion Constructor
+
+        #region CodeConstructor
+
+        private const string ListString = @"\begin{enumerate} \item Item 1 \item Item 2 \end{enumerate}";
+
+        [Test]
+        public void codeConstructor_should_set_itemList()
+        {
+            // When 
+            SUT = new Enumerate(ListString);
+
+            // Then
+            CollectionAssert.AreEqual(
+                new List<TextBody>
+                {
+                    new TextBody("Item 1"),
+                    new TextBody("Item 2")
+                },
+                SUT.ItemList);
+        }
+
+        #endregion CodeConstructor
 
         #region AddItem
 
