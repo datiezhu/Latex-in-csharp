@@ -80,6 +80,21 @@ namespace Moosetrail.LaTeX.Elements
         /// </summary>
         public static string Pattern = @"\\begin{enumerate}(.*?)\\end{enumerate}";
 
+        public IEnumerable<string> CodeIndicators
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void SetChildElement(params LaTeXElement[] elements)
+        {
+            throw new NotImplementedException();
+        }
+
+        string LaTeXElement.ParseCode(string code)
+        {
+            throw new NotImplementedException();
+        }
+
         internal void ParseCode(string code)
         {
             _code = new StringBuilder(code);

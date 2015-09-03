@@ -1,4 +1,6 @@
-﻿namespace Moosetrail.LaTeX.Elements
+﻿using System.Collections.Generic;
+
+namespace Moosetrail.LaTeX.Elements
 {
     /// <summary>
     /// Object represents a textblock in a latex element
@@ -62,6 +64,21 @@
         public override string ToString()
         {
             return TheText;
+        }
+
+        public IEnumerable<string> CodeIndicators
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public void SetChildElement(params LaTeXElement[] elements)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string ParseCode(string code)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

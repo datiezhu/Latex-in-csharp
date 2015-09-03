@@ -22,6 +22,21 @@ namespace Moosetrail.LaTeX.Elements
         /// </summary>
         public List<LaTeXElement> Elements { get; set; }
 
+        public IEnumerable<string> CodeIndicators
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void SetChildElement(params LaTeXElement[] elements)
+        {
+            throw new NotImplementedException();
+        }
+
+        string LaTeXElement.ParseCode(string code)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Parse the code to set the information in the document. 
         /// Must begin with \section

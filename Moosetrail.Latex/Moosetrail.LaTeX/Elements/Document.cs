@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Moosetrail.LaTeX.Elements
 {
@@ -26,7 +25,6 @@ namespace Moosetrail.LaTeX.Elements
             Author = CodeParser.SimpleContent("author", latexCode);
             Title = CodeParser.SimpleContent("title", latexCode);
             HasMakeTitle = latexCode.Contains(@"\maketitle");
-            Elements = ContentParser.GetAllElements(CodeParser.CodeInsideTag("document", latexCode)).ToList();
         }
 
         /// <summary>
@@ -48,5 +46,20 @@ namespace Moosetrail.LaTeX.Elements
         /// Get/Set the elements of the document
         /// </summary>
         public List<LaTeXElement> Elements { get; set; }
+
+        public IEnumerable<string> CodeIndicators
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public void SetChildElement(params LaTeXElement[] elements)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string ParseCode(string code)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

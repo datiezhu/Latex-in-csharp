@@ -7,7 +7,7 @@ namespace Moosetrail.LaTeX
     /// <summary>
     /// Helperclass that holds handling of formating text in regular text
     /// </summary>
-    public static class TextFormatStrings
+    internal static class TextFormatStrings
     {
         public static List<string> List = new List<string>
         {

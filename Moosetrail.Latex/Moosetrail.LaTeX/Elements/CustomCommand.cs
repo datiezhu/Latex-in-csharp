@@ -11,6 +11,21 @@ namespace Moosetrail.LaTeX.Elements
 
         public IEnumerable<LaTeXElement> Content { get; set; }
 
+        public IEnumerable<string> CodeIndicators
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
+        public void SetChildElement(params LaTeXElement[] elements)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        string LaTeXElement.ParseCode(string code)
+        {
+            throw new System.NotImplementedException();
+        }
+
         internal void ParseCode(string code)
         {
             var command = Regex.Match(code, @"\\begin\{(.*?)\}");
