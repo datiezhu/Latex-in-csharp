@@ -55,7 +55,8 @@ namespace Moosetrail.LaTeX.Elements
         /// <param name="item">The text to add as the item</param>
         public void AddItem(string item)
         {
-            _itemList.Add(new TextBody(item));
+            if(!TextFormatStrings.List.Contains(item))
+                _itemList.Add(new TextBody(TextFormatStrings.Remove(item)));
         }
 
         /// <summary>

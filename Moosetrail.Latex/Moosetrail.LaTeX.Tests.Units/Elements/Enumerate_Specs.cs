@@ -77,6 +77,28 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
             CollectionAssert.Contains(SUT.ItemList, new TextBody("My text"));
         }
 
+        [Test]
+        [TestCaseSource(nameof(_noneAddItems))]
+        public void addItem_should_not_add_item_wit_only_formating(string str)
+        {
+            // When 
+            SUT.AddItem(str);
+
+            // Then
+            Assert.IsEmpty(SUT.ItemList);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(_noneAddItems))]
+        public void addItem_should_remove_starting_textFormat_from_item(string str)
+        {
+            // When 
+            SUT.AddItem(str + "My item");
+
+            // Then
+            CollectionAssert.Contains(SUT.ItemList, new TextBody("My item"));
+        }
+
         #endregion AddItem
 
         #region ToCode
@@ -96,5 +118,20 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         }
 
         #endregion ToCode
+
+        #region TestHelpers
+
+        readonly List<string> _noneAddItems = new List<string>
+        {
+            @"\n",
+            @"\t",
+            @"\n\t",
+            @"\r",
+            @"\n\r",
+            @"\r\n",
+            @"\t\n"
+        }; 
+
+        #endregion TestHelpers
     }
 }
