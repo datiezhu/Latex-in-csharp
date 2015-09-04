@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeParser.cs" />
+    <Compile Include="ElementsParser\DocumentClassParser.cs" />
     <Compile Include="Elements\Chapter.cs" />
     <Compile Include="Elements\CustomCommand.cs" />
     <Compile Include="Elements\Document.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Elements\Section.cs" />
     <Compile Include="Elements\TextBody.cs" />
     <Compile Include="LaTeXElement.cs" />
+    <Compile Include="LaTeXElementParser.cs" />
     <Compile Include="LatexParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextFormatStrings.cs" />

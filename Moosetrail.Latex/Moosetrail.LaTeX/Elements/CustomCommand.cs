@@ -21,11 +21,6 @@ namespace Moosetrail.LaTeX.Elements
             throw new System.NotImplementedException();
         }
 
-        string LaTeXElement.ParseCode(string code)
-        {
-            throw new System.NotImplementedException();
-        }
-
         internal void ParseCode(string code)
         {
             var command = Regex.Match(code, @"\\begin\{(.*?)\}");

@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ElementsParser\DocumentClassParser_Specs.cs" />
     <Compile Include="Elements\Chapter_Specs.cs" />
     <Compile Include="Elements\CustomCommand_Specs.cs" />
     <Compile Include="Elements\DocumentClass_Specs.cs" />

@@ -90,11 +90,6 @@ namespace Moosetrail.LaTeX.Elements
             throw new NotImplementedException();
         }
 
-        string LaTeXElement.ParseCode(string code)
-        {
-            throw new NotImplementedException();
-        }
-
         internal void ParseCode(string code)
         {
             _code = new StringBuilder(code);

@@ -32,11 +32,6 @@ namespace Moosetrail.LaTeX.Elements
             throw new NotImplementedException();
         }
 
-        string LaTeXElement.ParseCode(string code)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Parse the code to set the information in the document. 
         /// Must begin with \section

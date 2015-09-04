@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using Moosetrail.LaTeX.Elements;
+using Moosetrail.LaTeX.ElementsParser;
 
 namespace Moosetrail.LaTeX
 {
@@ -13,7 +13,7 @@ namespace Moosetrail.LaTeX
     {
         private readonly IReadOnlyDictionary<IEnumerable<string>, LaTeXElement> _laTeXElements = new Dictionary<IEnumerable<string>, LaTeXElement>
         {
-            {DocumentClass.CodeIndicators, new DocumentClass() }
+            {DocumentClassParser.CodeIndicators, new DocumentClass() }
         };
 
         /// <summary>
