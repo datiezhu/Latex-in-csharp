@@ -32,7 +32,7 @@ namespace Moosetrail.LaTeX.Elements
 
             code = code.Replace(@"\end{" + CommandName + "}", "");
 
-            Content = LaTeXElements.GenerateElementsFromCode(code);
+            
         }
     }
 }

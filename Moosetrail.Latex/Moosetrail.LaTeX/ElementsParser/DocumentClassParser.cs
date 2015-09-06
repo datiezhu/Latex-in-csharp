@@ -38,10 +38,12 @@ namespace Moosetrail.LaTeX.ElementsParser
         public void SetChildElement(LaTeXElement element, params LaTeXElement[] children)
         {
             if (!children.Any())
-                throw new ArgumentException("No document supplied to set as child");
+                throw new ArgumentException("No child document supplied to set as child");
             else if (children.Length > 1)
-                throw new ArgumentException("More than one document supplied, not accepted");
+                throw new ArgumentException("More than one child element supplied, not accepted");
             else if (!(children[0] is Document))
+                throw new ArgumentException("The supplied child wasn't a Document, only Document is allowed");
+            else if(!(element is DocumentClass))
                 throw new ArgumentException("The supplied element wasn't a Document, only Document is allowed");
             else
                 ((DocumentClass)element).Document = (Document)children[0];
@@ -51,26 +53,43 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// Parses the code given the object and sets the data to the object 
         /// from the front of the string. 
         /// </summary>
-        /// <param name="code">The code to parse</param>
-        /// <param name="element">The element to parse the code into</param>
+        /// <param name="code">The code to parse and handle</param>
         /// <returns>
-        /// What is left of the string after the parser is done. 
-        /// The code that have been parsed into the object will have been removed
+        /// The newly parsed object. The string builder will also have been updted, the code parsed is removed
         /// </returns>
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
-        public string ParseCode(string code, LaTeXElement element)
+        public LaTeXElement ParseCode(StringBuilder code)
         {
-            if (!Regex.IsMatch(code, CodeParser.CreateCodeStartPattern(CodeIndicators)))
+            if (!Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators)))
                 throw new ArgumentException("The code didn't start with an allowed indicator");
 
-            var codeProcess = new StringBuilder(code);
+            removeDocumentClassInfo(code);
 
-            setPackages(codeProcess, element as DocumentClass);
+            var docClass = new DocumentClass();
+            setPackages(code, docClass);
 
-            return codeProcess.ToString();
+            return docClass;
         }
 
-        private void setPackages(StringBuilder code, DocumentClass docClass)
+        private static void removeDocumentClassInfo(StringBuilder codeProcess)
+        {
+            var docuStartWithoutLineBreak = Regex.Match(codeProcess.ToString(), @"(\\documentclass(.*?)\\)");
+            if (docuStartWithoutLineBreak.Success)
+            {
+                codeProcess.Replace(docuStartWithoutLineBreak.Groups[2].Value, "");
+            }   
+            else
+            {
+                var docStartWithLinebreak = Regex.Match(codeProcess.ToString(), @"\\documentclass(.*)");
+                if (docStartWithLinebreak.Success)
+                    codeProcess.Replace(docStartWithLinebreak.Value, "");
+            }
+
+            codeProcess.Replace("\\documentclass", "");
+
+        }
+
+        private static void setPackages(StringBuilder code, DocumentClass docClass)
         {
             foreach (var indicator in packageIndicators)
             {
@@ -78,7 +97,7 @@ namespace Moosetrail.LaTeX.ElementsParser
             }
         }
 
-        private void addUsePackagesForFormat(StringBuilder code, string pattern, DocumentClass docClass)
+        private static void addUsePackagesForFormat(StringBuilder code, string pattern, DocumentClass docClass)
         {
             var matches = Regex.Matches(code.ToString(), pattern);
             foreach (var package in from object match in matches select new StringBuilder(match.ToString()))

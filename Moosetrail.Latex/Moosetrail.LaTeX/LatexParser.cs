@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Moosetrail.LaTeX
@@ -13,9 +13,11 @@ namespace Moosetrail.LaTeX
         /// </summary>
         /// <param name="code">The code to parse</param>
         /// <returns>A hirarcy of elements parsed from the code</returns>
+        /// <exception cref="ArgumentException">Thrown if the code coudn't be fully parsed</exception>
         public static IEnumerable<LaTeXElement> ParseCode(string code)
         {
-            return null;
+            var parser = new CodeParser(code);
+            return parser.GetFullElementStack();
         }
     }
 }

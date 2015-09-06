@@ -42,16 +42,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeParser.cs" />
+    <Compile Include="ElementsParser\EnumerateParser.cs" />
+    <Compile Include="ElementsParser\ItemParser.cs" />
+    <Compile Include="ElementsParser\SubsubsectionParser.cs" />
+    <Compile Include="ElementsParser\SubsectionParser.cs" />
+    <Compile Include="ElementsParser\SectionParser.cs" />
+    <Compile Include="ElementsParser\ChapterParser.cs" />
     <Compile Include="ElementsParser\DocumentClassParser.cs" />
+    <Compile Include="ElementsParser\DocumentParser.cs" />
+    <Compile Include="ElementsParser\TextBodyParser.cs" />
     <Compile Include="Elements\Chapter.cs" />
     <Compile Include="Elements\CustomCommand.cs" />
     <Compile Include="Elements\Document.cs" />
     <Compile Include="Elements\DocumentClass.cs" />
+    <Compile Include="Elements\DocumentOrganisation.cs" />
     <Compile Include="Elements\Enumerate.cs" />
-    <Compile Include="Elements\LaTeXElements.cs" />
+    <Compile Include="Elements\Item.cs" />
+    <Compile Include="Elements\Subsubsection.cs" />
+    <Compile Include="Elements\Subsection.cs" />
     <Compile Include="Elements\Section.cs" />
     <Compile Include="Elements\TextBody.cs" />
     <Compile Include="LaTeXElement.cs" />
+    <Compile Include="LaTeXElementElementParserPair.cs" />
     <Compile Include="LaTeXElementParser.cs" />
     <Compile Include="LatexParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

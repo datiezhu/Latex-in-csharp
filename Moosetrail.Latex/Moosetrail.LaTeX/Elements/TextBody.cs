@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Moosetrail.LaTeX.Elements
+﻿namespace Moosetrail.LaTeX.Elements
 {
     /// <summary>
     /// Object represents a textblock in a latex element
@@ -52,7 +50,7 @@ namespace Moosetrail.LaTeX.Elements
         /// </returns>
         public override int GetHashCode()
         {
-            return (_theText != null ? _theText.GetHashCode() : 0);
+            return _theText?.GetHashCode() ?? 0;
         }
 
         /// <summary>
@@ -64,21 +62,6 @@ namespace Moosetrail.LaTeX.Elements
         public override string ToString()
         {
             return TheText;
-        }
-
-        public IEnumerable<string> CodeIndicators
-        {
-            get { throw new System.NotImplementedException(); }
-        }
-
-        public void SetChildElement(params LaTeXElement[] elements)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public string ParseCode(string code)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

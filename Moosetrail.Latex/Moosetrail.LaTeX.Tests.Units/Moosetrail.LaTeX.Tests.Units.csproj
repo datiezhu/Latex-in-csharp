@@ -54,14 +54,26 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ElementsParser\EnumerateParser_Specs.cs" />
+    <Compile Include="ElementsParser\ItemParser_Specs.cs" />
+    <Compile Include="ElementsParser\SubsubsectionParser_Specs.cs" />
+    <Compile Include="ElementsParser\SubsectionParser_Specs.cs" />
+    <Compile Include="ElementsParser\SectionParser_Specs.cs" />
+    <Compile Include="ElementsParser\ChapterParser_Specs.cs" />
     <Compile Include="ElementsParser\DocumentClassParser_Specs.cs" />
+    <Compile Include="ElementsParser\DocumentParser_Specs.cs" />
+    <Compile Include="ElementsParser\TextBodyParser_Specs.cs" />
     <Compile Include="Elements\Chapter_Specs.cs" />
     <Compile Include="Elements\CustomCommand_Specs.cs" />
     <Compile Include="Elements\DocumentClass_Specs.cs" />
     <Compile Include="Elements\Document_Specs.cs" />
     <Compile Include="Elements\Enumerate_Specs.cs" />
+    <Compile Include="Elements\Item_Specs.cs" />
+    <Compile Include="Elements\Subsubsection_Specs.cs" />
+    <Compile Include="Elements\Subsection_Specs.cs" />
     <Compile Include="Elements\Section_Specs.cs" />
     <Compile Include="Elements\TextBody_Specs.cs" />
+    <Compile Include="LatexParser_Specs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

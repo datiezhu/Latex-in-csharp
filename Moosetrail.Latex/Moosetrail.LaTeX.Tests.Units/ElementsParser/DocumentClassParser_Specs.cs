@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Moosetrail.LaTeX.Elements;
 using Moosetrail.LaTeX.ElementsParser;
 using NUnit.Framework;
@@ -93,10 +94,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         public void parseCode_should_set_usePacakges()
         {
             // Given
-            var docClass = new DocumentClass();
 
             // When 
-            SUT.ParseCode(BasicDocument, docClass);
+            var docClass = SUT.ParseCode(new StringBuilder(BasicDocument)) as DocumentClass;
 
             // Then
             CollectionAssert.Contains(docClass.UsePackages, "[utf8]inputenc");
@@ -106,10 +106,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         public void parseCode_should_leave_usePackages_empty_if_no_packages()
         {
             // Given
-            var docClass = new DocumentClass();
 
             // When 
-            SUT.ParseCode(BasicDocumentWithoutPackages, docClass);
+            var docClass = SUT.ParseCode(new StringBuilder(BasicDocumentWithoutPackages)) as DocumentClass;
 
             // Then
             Assert.IsEmpty(docClass.UsePackages);
@@ -119,13 +118,12 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         public void parseCode_should_handle_start_with_packages()
         {
             // Given 
-            var docClass = new DocumentClass();
             const string str = @"\usepackage[utf8][test]{inputenc}" +
                                @"\usepackage{babel}" +
                                @"\begin{document}";
 
             // When 
-            SUT.ParseCode(str, docClass);
+            var docClass = SUT.ParseCode(new StringBuilder(str)) as DocumentClass;
 
             // Then
             CollectionAssert.Contains(docClass.UsePackages, "[utf8][test]inputenc");
@@ -136,45 +134,43 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         public void parseCode_should_return_the_remaining_string()
         {
             // Given 
-            var docClass = new DocumentClass();
-            const string str = @"\usepackage[utf8]{inputenc}" +
+            const string str = @"\documentclass[11pt]{report}" +
+                               @"\usepackage[utf8]{inputenc}" +
                                @"\usepackage{babel}" +
                                @"\begin{document}";
+            var sb = new StringBuilder(str);
 
             // When 
-            var result = SUT.ParseCode(str, docClass);
+            SUT.ParseCode(sb);
 
             // Then
-            Assert.AreEqual(@"\begin{document}", result);
+            Assert.AreEqual(@"\begin{document}", sb.ToString());
         }
-
         [Test]
-        public void parseCode_should_not_do_anything_if_no_dataClass_code()
+        public void parseCode_should_return_the_remaining_string_with_linebreak_in_class()
         {
-            // Given
-            var docClass = new DocumentClass();
+            // Given 
+            const string str = @"\documentclass[11pt]{report}\n" +
+                               @"\usepackage[utf8]{inputenc}" +
+                               @"\usepackage{babel}" +
+                               @"\begin{document}";
+            var sb = new StringBuilder(str);
 
             // When 
-            try
-            {
-                SUT.ParseCode("My text", docClass);
-            }
-            catch (ArgumentException)
-            { }
+            SUT.ParseCode(sb);
 
             // Then
-            Assert.IsNull(docClass.Document);
-            Assert.IsEmpty(docClass.UsePackages);
+            Assert.AreEqual(@"\n\begin{document}", sb.ToString());
         }
 
         [Test]
         public void parseCode_should_throw_if_string_doesnt_start_with_codeIndicator()
         {
             // Given
-            var docClass = new DocumentClass();
+           
 
             // Then
-            Assert.Throws<ArgumentException>(() => SUT.ParseCode("My code", docClass));
+            Assert.Throws<ArgumentException>(() => SUT.ParseCode(new StringBuilder("My text")));
         }
 
         #endregion ParseCode
@@ -196,35 +192,46 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
-        public void setChildElement_should_throw_if_there_is_no_element_set()
+        public void setChildElement_should_throw_if_there_is_no_children_set()
         {
             // Given
             var docClass = new DocumentClass();
 
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(docClass));
-            Assert.AreEqual("No document supplied to set as child", ex.Message);
+            Assert.AreEqual("No child document supplied to set as child", ex.Message);
         }
 
         [Test]
-        public void setChildElement_should_throw_if_two_documents_are_supplied()
+        public void setChildElement_should_throw_if_two_children_are_supplied()
         {
             // Given
             var docClass = new DocumentClass();
 
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(docClass, new Document(), new Document()));
-            Assert.AreEqual("More than one document supplied, not accepted", ex.Message);
+            Assert.AreEqual("More than one child element supplied, not accepted", ex.Message);
         }
 
         [Test]
-        public void setChildElement_should_throw_if_suplied_element_isnt_a_document()
+        public void setChildElement_should_throw_if_suplied_child_isnt_a_document()
         {
             // Given
             var docClass = new DocumentClass();
 
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(docClass, new TextBody()));
+            Assert.AreEqual("The supplied child wasn't a Document, only Document is allowed", ex.Message);
+        }
+
+        [Test]
+        public void setChildElement_should_throw_if_suplied_element_isnt_a_documentClass()
+        {
+            // Given
+            var docClass = new DocumentClass();
+
+            // Then
+            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new Document()));
             Assert.AreEqual("The supplied element wasn't a Document, only Document is allowed", ex.Message);
         }
 
