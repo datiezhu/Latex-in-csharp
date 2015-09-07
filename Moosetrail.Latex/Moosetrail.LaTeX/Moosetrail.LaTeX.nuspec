@@ -5,13 +5,13 @@
     <version>1.0.1.0</version>
     <title>Moosetrail.LaTeX</title>
     <authors>Moosetrail Software</authors>
-    <description>Latex for C#, parsing to and from using objects</description>
+    <description>Parsing Latex documents with document, chapter, section, subsection... eumerate, math</description>
     <language />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <developmentDependency>false</developmentDependency>
     <copyright>Copyright ©  2015</copyright>
   </metadata>
   <files>
-    <file src="C:\Users\Johanna\Documents\Latex-to-csharp\Latex-in-csharp\Moosetrail.Latex\Moosetrail.LaTeX\bin\Release\Moosetrail.LaTeX.dll" target="lib\net45" />
+    <file src="C:\Users\Johanna\Documents\Latex-to-csharp\Latex-in-csharp\Moosetrail.Latex\Moosetrail.LaTeX\bin\Debug\Moosetrail.LaTeX.dll" target="lib\net45" />
   </files>
 </package>
