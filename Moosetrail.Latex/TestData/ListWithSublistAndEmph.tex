@@ -1,0 +1,16 @@
+
+\section{Analys av tidsdiskreta linjära tidsinvarianta system}
+\begin{enumerate}
+	\item Vilka är stegen vid matematisk faltning? - \begin{enumerate}
+		\item \emph{Viktning}. Vik $h(k)$ runt $k=0$ för att få $h(-k)$
+		\item \emph{Skifta}. Skifta $h(-k)$ med $n$ till höger (vänster) om $n$ är positiv (negativ) för att få $h(n-k)$
+		\item \emph{Multiplicera}. Multiplicera $x(n)$ med $h(n-k)$ för att få produkten 
+		\item \emph{Summera}. Summera alla multiplikationer för att få värdet av utsignalen vid tiden $n$
+		\end{enumerate}
+	\item Hur ser formeln för faltning ut för en insignal $x(n)$ som är kausalt och ett impulssvar $h(n)$ som också är kausalt? - $y(n)=\sum^n_{k=0}x(k)h(n-k)$
+	\item Vilket krav finns det på faltningen av ett LIT system för att systemet ska vara BIBO stabilt? - Det är BIBO stabilt om och endast om impulssvaret är absolut summerbart d.v.s \[ S_h = \sum^\infty_{k=-\infty} |h(k)| < \infty \]
+	\end{enumerate}
+
+	
+	
+\end{document}

@@ -1,18 +1,17 @@
-﻿using System.Text;
-using Moosetrail.LaTeX.Elements;
+﻿using Moosetrail.LaTeX.Elements;
 using NUnit.Framework;
 
 namespace Moosetrail.LaTeX.Tests.Units.Elements
 {
     [TestFixture]
-    public class Document_Specs
+    public class Subsubsection_Specs
     {
-        private Document SUT;
+        private Subsubsection SUT;
 
         [SetUp]
         public void Setup()
         {
-            SUT = new Document();
+            SUT = new Subsubsection();
         }
 
         [TearDown]
@@ -27,20 +26,19 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
             Assert.IsInstanceOf<LaTeXElement>(SUT);
         }
 
-        #region Empty Constructor
+        #region Constrcutor Empty
 
         [Test]
         public void constructor_should_set_elements_to_empty()
         {
             // When 
-            SUT = new Document();
+            SUT = new Subsubsection();
 
             // Then
             Assert.IsEmpty(SUT.Elements);
         }
 
-        #endregion Empty Constructor
+        #endregion Constrcutor Empty
 
-       
     }
 }

@@ -42,28 +42,6 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
         #endregion Constructor
 
-        #region CodeConstructor
-
-        private const string ListString = @"\begin{enumerate} \item Item 1 \item Item 2 \end{enumerate}";
-
-        [Test]
-        public void codeConstructor_should_set_itemList()
-        {
-            // When 
-            SUT = new Enumerate(ListString);
-
-            // Then
-            CollectionAssert.AreEqual(
-                new List<TextBody>
-                {
-                    new TextBody("Item 1"),
-                    new TextBody("Item 2")
-                },
-                SUT.ItemList);
-        }
-
-        #endregion CodeConstructor
-
         #region AddItem
 
         [Test]
@@ -74,7 +52,7 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
             // Then
             Assert.AreEqual(1, SUT.ItemList.Count());
-            CollectionAssert.Contains(SUT.ItemList, new TextBody("My text"));
+            CollectionAssert.Contains(SUT.ItemList[0].Elements, new TextBody("My text"));
         }
 
         [Test]
@@ -96,7 +74,7 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
             SUT.AddItem(str + "My item");
 
             // Then
-            CollectionAssert.Contains(SUT.ItemList, new TextBody("My item"));
+            CollectionAssert.Contains(SUT.ItemList[0].Elements, new TextBody("My item"));
         }
 
         #endregion AddItem
@@ -123,13 +101,13 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
         readonly List<string> _noneAddItems = new List<string>
         {
-            @"\n",
-            @"\t",
-            @"\n\t",
-            @"\r",
-            @"\n\r",
-            @"\r\n",
-            @"\t\n"
+            "\n",
+            "\t",
+            "\n\t",
+            "\r",
+            "\n\r",
+            "\r\n",
+            "\t\n"
         }; 
 
         #endregion TestHelpers

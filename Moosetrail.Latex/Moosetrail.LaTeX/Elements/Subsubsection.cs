@@ -3,14 +3,14 @@
 namespace Moosetrail.LaTeX.Elements
 {
     /// <summary>
-    /// Class representing a Section in LaTeX code
+    /// Class representing a Subsubsection in LaTeX code
     /// </summary>
-    public class Section : LaTeXElement
+    public class Subsubsection : LaTeXElement
     {
         /// <summary>
-        /// Creates a new instance of the Section class
+        /// Creates a new instance of the Subsubsection class
         /// </summary>
-        public Section()
+        public Subsubsection()
         {
             Elements = new List<LaTeXElement>();
         }
