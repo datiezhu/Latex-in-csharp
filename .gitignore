@@ -210,3 +210,8 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+Moosetrail.Latex/TestData/ListDocument.pdf
+Moosetrail.Latex/TestData/ListDocument.synctex.gz
+Moosetrail.Latex/TestData/ListWithSublistAndEmph.aux
+Moosetrail.Latex/TestData/ListWithSublistAndEmph.pdf
+Moosetrail.Latex/TestData/ListWithSublistAndEmph.synctex.gz

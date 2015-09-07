@@ -1,0 +1,87 @@
+\documentclass[11pt]{report}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\begin{document}
+\title{Digital Signalbehandling - Repeteringsfrågor}
+\author{Johanna Petersson}
+\maketitle
+
+\chapter{Introduktion}
+\section{Signaler, system och signal processering}
+\begin{enumerate}
+	\item Hur definieras en signal? - Det är en fysisk kvantitet som varierar med tid, utrymme eller annan oberoende variabel (variabler) 
+	\item Hur kan ett system vara definierat? - Kan vara definierat som en fysisk apparat som utför en operation på en signal. Alternativt ett system som svarar på stimulans eller kraft genom att skapa en signal
+\end{enumerate}
+
+\section{Klassifikation av signaler}
+\begin{enumerate}
+	\item Hur definieras en analog signal? - Signalen är definierad för varje värde av tid och värdet är i ett kontinuerligt intervall mellan $-\infty$ och $\infty$
+	\item Hur definieras tidsdiskreta signaler? - Signalen är bara definierad vid vissa tidpunkter
+	\item Hur betecknas en analog signal? - $x(t)$
+	\item Hur betecknas en tidsdiskret signal? - $x(n)$
+	\item Vilka värden kan en kontinuerlig signal? - Alla värden mellan $-\infty$ och $\infty$
+	\item Hur definieras en diskret-värdes signal? - En signal vars värden bara kan anta ändligt antal värde 
+	\item Vad är definitionen för en digital signal? - En signal som är en tidsdiskret och bara kan anta ett ändligt antal värde är en digital signal 
+	\item Vad är en deterministisk signal? - En signal som kan beskrivas precist med en matematisk formula eller en data tabell. Alla tidigare, nuvarande och kommande värden kan bestämmas precist. 
+\end{enumerate}
+
+\section{Konceptet för frekvens i kontinuerliga tid och tidsdiskreta signaler}
+\begin{enumerate}
+	\item Vilka tre parametrar karaktäriserar en vanlig analog signal? - Amplituden $(A)$, frekvensen $(\Omega)$ och fasen $(\theta)$
+	\item Skriv upp standardformeln för en analog signal - $x_a(t)=A \cos(\Omega t + \theta) \quad -\infty < t < \infty$
+	\item Vad beskriver frekvensen $\Omega$ - Antalet radianer per sekund (rad/sec) 
+	\item Vad beskriver fasen $\theta$ - Fasen vriden i radianer från $0$
+	\item Hur konverteras $\Omega$ till frekvens $F$? - $\Omega = 2\pi F$ 
+\end{enumerate}
+
+\chapter{Diskreta tids- signaler och system}
+\section{Diskreta tidssignaler}
+\begin{enumerate}
+	\item Är en diskret tidssignal $x(n)$ definierad för alla tal? - Nej, bara heltal som är samplade, oftast antaget intervallet $-\infty < n < \infty$. Utanför heltal är signalen $0$
+	\item Hur är en $\delta (n)$ definierad? - $\delta (n) = \left\{ \begin{array}{l l}
+		1 & \quad \text{då } n=0 \\
+		0 & \quad \text{då } n \neq 0
+	\end{array}\right.$
+	\item Hur betecknas en stegsignal? - $u(n)$
+	\item Hur är $u(n)$ definierad? - $u(n) = \left\{ \begin{array}{l l}
+		1 & \quad \text{då } n \geq 0 \\
+		0 & \quad \text{då } n < 0
+	\end{array}\right.$
+	\item Hur betecknas en ramp signal? - $u_r(n)$
+	\item Hur är $u_r(n)$ definierad? -  $u_r(n) = \left\{ \begin{array}{l l}
+		n & \quad \text{då } n \geq 0 \\
+		0 & \quad \text{då } n < 0
+	\end{array}\right.$
+	\item Hur är en exponential signal betecknas? - $x(n)=a^n$
+\end{enumerate}
+
+\section{Diskreta tidssystem}
+\begin{enumerate}
+	\item Hur definieras att ett system är tidsinvariant? - Ett avslappnat system $\mathcal{T}$ är tidsinvariant eller skiftinvariant om och endast om \[ x(n) \longrightarrow^{\mathcal{T}} y(n)  \] vilket ger \[ x(n-k) \longrightarrow^{\mathcal{T}} y(n-k)\] för varje insignal $x(n)$ och varje tidsskiftning $k$
+	\item Hur definieras ett linjärt system? - Ett system är linjärt om och endast om \[ \mathcal{T}(a_1x_1(n)+a_2x_2(n)) = a_1\mathcal{T}(x_1(n)) + a_2 \mathcal{T}(x_2(n)) \]för alla möjliga sekvenser av $x_1(n)$ och $x_2(n)$ och alla konstanter $a_1$ och $a_2$
+	\item Hur definieras ett kausalt system? - Ett system sägs vara kausalt om utsignalen från systemet för alla givna tider $n$ endast beror på tidigare insignaler men inte beror på kommande insignaler 
+	\item Hur definieras stabilitet för ett system? - Ett godtyckligt avslappnat system sägs vara bunden insignal-bunden utsignal (BIBO) stabilt om och endast om det för varje bunden insignal produceras en bunden utsignal 
+	\item Vad betyder BIBO? - Det är stabilitetsgräns som säger att varken in eller utsignalen får vara $\infty$ för att det ska vara uppfyllt 
+\end{enumerate}
+
+\section{Analys av tidsdiskreta linjära tidsinvarianta system}
+\begin{enumerate}
+	\item Vad står LTI för? - Det står för linjära tidsinvarianta system 
+	\item Hur betecknas impulssvaret? - $h(n)$
+	\item Vad är insignalen för att få impulssvaret? - $\delta(n)$
+	\item Vad är utsignalen för ett LTI system om insignalen är $x(n)$? - $y(n)=\sum^\infty_{k=-\infty}x(k)h(n-k)$
+	\item Vad är faltnings formeln? - $y(n)=\sum^\infty_{k=-\infty}x(k)h(n-k)$
+	\item Vilka är stegen vid matematisk faltning? - \begin{enumerate}
+		\item \emph{Viktning}. Vik $h(k)$ runt $k=0$ för att få $h(-k)$
+		\item \emph{Skifta}. Skifta $h(-k)$ med $n$ till höger (vänster) om $n$ är positiv (negativ) för att få $h(n-k)$
+		\item \emph{Multiplicera}. Multiplicera $x(n)$ med $h(n-k)$ för att få produkten 
+		\item \emph{Summera}. Summera alla multiplikationer för att få värdet av utsignalen vid tiden $n$
+		\end{enumerate}
+	\item Hur ser formeln för faltning ut för en insignal $x(n)$ som är kausalt och ett impulssvar $h(n)$ som också är kausalt? - $y(n)=\sum^n_{k=0}x(k)h(n-k)$
+	\item Vilket krav finns det på faltningen av ett LIT system för att systemet ska vara BIBO stabilt? - Det är BIBO stabilt om och endast om impulssvaret är absolut summerbart d.v.s \[ S_h = \sum^\infty_{k=-\infty} |h(k)| < \infty \]
+	\end{enumerate}
+
+	
+	
+\end{document}

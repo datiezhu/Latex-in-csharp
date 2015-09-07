@@ -3,25 +3,20 @@
 namespace Moosetrail.LaTeX.Elements
 {
     /// <summary>
-    /// Class representing a latex chapter
+    /// Class representing items in a list in latex
     /// </summary>
-    public class Chapter : LaTeXElement
+    public class Item : LaTeXElement
     {
         /// <summary>
-        /// Creates a new isntance of the Chpter class
+        /// Creates a new instance of the Item class
         /// </summary>
-        public Chapter()
+        public Item()
         {
             Elements = new List<LaTeXElement>();
         }
 
         /// <summary>
-        /// Get/Set the name of the chapter
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Get/Set the elements of the chapter
+        /// Get/Set the elements of the item
         /// </summary>
         public List<LaTeXElement> Elements { get; set; }
     }

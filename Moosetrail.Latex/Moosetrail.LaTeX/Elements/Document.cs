@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Moosetrail.LaTeX.Elements
 {
@@ -14,19 +13,6 @@ namespace Moosetrail.LaTeX.Elements
         public Document()
         {
             Elements = new List<LaTeXElement>();
-        }
-
-        /// <summary>
-        /// Creates a new instance of the Document class and sets its data from the latex code
-        /// </summary>
-        /// <param name="latexCode">The code to create the object for</param>
-        public Document(string latexCode)
-        {
-            Elements = new List<LaTeXElement>();
-            Author = CodeParser.SimpleContent("author", latexCode);
-            Title = CodeParser.SimpleContent("title", latexCode);
-            HasMakeTitle = latexCode.Contains(@"\maketitle");
-            Elements = ContentParser.GetAllElements(CodeParser.CodeInsideTag("document", latexCode)).ToList();
         }
 
         /// <summary>

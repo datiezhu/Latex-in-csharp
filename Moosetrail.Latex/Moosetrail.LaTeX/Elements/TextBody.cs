@@ -50,7 +50,7 @@
         /// </returns>
         public override int GetHashCode()
         {
-            return (_theText != null ? _theText.GetHashCode() : 0);
+            return _theText?.GetHashCode() ?? 0;
         }
 
         /// <summary>
