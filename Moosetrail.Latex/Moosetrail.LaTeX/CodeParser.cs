@@ -17,7 +17,7 @@ namespace Moosetrail.LaTeX
         private readonly List<LaTeXElementParser> _parserList;
         private readonly List<LaTeXElement> _elementsList;
 
-        private TextBodyParser _textParser;
+        private readonly TextBodyParser _textParser;
 
         private readonly IReadOnlyDictionary<IEnumerable<string>, LaTeXElementParser> _laTeXElements
             = new Dictionary<IEnumerable<string>, LaTeXElementParser>
@@ -26,9 +26,18 @@ namespace Moosetrail.LaTeX
                     DocumentClassParser.CodeIndicators,
                     new DocumentClassParser()
                 },
-                {DocumentParser.CodeIndicators, new DocumentParser()},
-                {ChapterParser.CodeIndicators, new ChapterParser()},
-                {SectionParser.CodeIndicators, new SectionParser()},
+                {
+                    DocumentParser.CodeIndicators,
+                    new DocumentParser()
+                },
+                {
+                    ChapterParser.CodeIndicators,
+                    new ChapterParser()
+                },
+                {
+                    SectionParser.CodeIndicators,
+                    new SectionParser()
+                },
                 {
                     SubsectionParser.CodeIndicators,
                     new SubsectionParser()
@@ -44,6 +53,10 @@ namespace Moosetrail.LaTeX
                 {
                     ItemParser.CodeIndicators,
                     new ItemParser()
+                },
+                {
+                    TextBodyParser.CodeIndicators,
+                    new TextBodyParser()
                 }
             };
 
@@ -78,46 +91,48 @@ namespace Moosetrail.LaTeX
             if (string.IsNullOrWhiteSpace(code.ToString()))
                 return;
 
-            var parser = _laTeXElements.SingleOrDefault(x => x.Key.Any(pattern => Regex.IsMatch(code.ToString(), "^" + pattern))).Value;
+            var parser = getParserForCode(code);
 
-            if (parser == null && !_textParser.CodeStartsWithText(code))
-            {
+            if (codeCantBeProcessed(code, parser))
                 throw new ArgumentException("The code couldnt be parsed: " + code);
-            }
 
-            LaTeXElement element;
-            if (_textParser.CodeStartsWithText(code))
-                element = _textParser.ParseCode(code);
-            else
-                element = parser.ParseCode(code);
+            var element = parseElement(code, parser);
 
-            if (element == null)
-            { }
-            else if (_elements.Count == 0)
-            {
-                handeElementAndParser(element, parser);
-            }
-            else
-            {
-                try
-                {
-                    _parserList[_parserList.Count - 1].SetChildElement(_elementsList[_elementsList.Count - 1], element);
-                    addElementAndParserToTracking(element, parser);
-                }
-                catch (ArgumentException)
-                {
-                    serachForParent(element, parser);
-                }
-                catch (NotSupportedException)
-                {
-                    serachForParent(element, parser);
-                }
-            }
+            setElementInHierarchy(element, parser);
 
             praseCode(code);
         }
 
-        private void handeElementAndParser(LaTeXElement element, LaTeXElementParser parser)
+        private LaTeXElementParser getParserForCode(StringBuilder code)
+        {
+            var parser =
+                _laTeXElements.SingleOrDefault(x => x.Key.Any(pattern => Regex.IsMatch(code.ToString(), "^" + pattern))).Value;
+            return parser;
+        }
+
+        private bool codeCantBeProcessed(StringBuilder code, LaTeXElementParser parser)
+        {
+            return parser == null && !_textParser.CodeStartsWithText(code);
+        }
+
+        private LaTeXElement parseElement(StringBuilder code, LaTeXElementParser parser)
+        {
+            var element = _textParser.CodeStartsWithText(code) ? _textParser.ParseCode(code) : parser.ParseCode(code);
+            return element;
+        }
+
+        private void setElementInHierarchy(LaTeXElement element, LaTeXElementParser parser)
+        {
+            if (element != null && _elements.Count == 0)
+                addElementToList(element, parser);
+            else if (element != null)
+                setElementToParent(element, parser);
+            else
+                backofElement(parser);
+        }
+
+     
+        private void addElementToList(LaTeXElement element, LaTeXElementParser parser)
         {
             _elements.Add(element);
             addElementAndParserToTracking(element, parser);
@@ -130,6 +145,28 @@ namespace Moosetrail.LaTeX
                 _parserList.Add(parser);
                 _elementsList.Add(element);
             }
+        }
+
+        private void setElementToParent(LaTeXElement element, LaTeXElementParser parser)
+        {
+            try
+            {
+                setElementToClosestParent(element, parser);
+            }
+            catch (ArgumentException)
+            {
+                serachForParent(element, parser);
+            }
+            catch (NotSupportedException)
+            {
+                serachForParent(element, parser);
+            }
+        }
+
+        private void setElementToClosestParent(LaTeXElement element, LaTeXElementParser parser)
+        {
+            _parserList[_parserList.Count - 1].SetChildElement(_elementsList[_elementsList.Count - 1], element);
+            addElementAndParserToTracking(element, parser);
         }
 
         private void serachForParent(LaTeXElement element, LaTeXElementParser parser)
@@ -161,9 +198,23 @@ namespace Moosetrail.LaTeX
                 _parserList.Clear();
                 _elementsList.Clear();
 
-                handeElementAndParser(element, parser);
+                addElementToList(element, parser);
             }
         }
+
+        private void backofElement(LaTeXElementParser parser)
+        {
+            var searchingForType = parser.GetEmptyElement().GetType();
+            for (var i = _elementsList.Count - 1; i >= 0; i--)
+            {
+                if (_elementsList[i].GetType() == searchingForType)
+                {
+                    _elementsList.RemoveRange(i +1, _elementsList.Count - i-1);
+                    _parserList.RemoveRange(i + 1, _parserList.Count - i-1);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Extracts a specific element from the strig and removes in

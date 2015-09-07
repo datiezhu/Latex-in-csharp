@@ -25,7 +25,16 @@ namespace Moosetrail.LaTeX.ElementsParser
         {
             BeginCommand,
             @"\\end{enumerate}"
-        }; 
+        };
+
+        /// <summary>
+        /// Gets an element, same as the ParseCode but without anything set, just an empty object
+        /// </summary>
+        /// <returns>A LatexObject</returns>
+        public LaTeXElement GetEmptyElement()
+        {
+            return new Enumerate();
+        }
 
         /// <summary>
         /// Sets the child elements of a given element

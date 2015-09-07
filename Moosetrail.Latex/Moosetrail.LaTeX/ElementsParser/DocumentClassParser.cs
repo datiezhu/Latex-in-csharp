@@ -29,6 +29,15 @@ namespace Moosetrail.LaTeX.ElementsParser
         };
 
         /// <summary>
+        /// Gets an element, same as the ParseCode but without anything set, just an empty object
+        /// </summary>
+        /// <returns>A LatexObject</returns>
+        public LaTeXElement GetEmptyElement()
+        {
+            return new DocumentClass();
+        }
+
+        /// <summary>
         /// Sets the child elements of a given element
         /// </summary>
         /// <param name="element">The element to set the children to</param>

@@ -207,7 +207,28 @@ namespace Moosetrail.LaTeX.Tests.Units
             Assert.AreEqual(2, docClass.Document.Elements.Count);
             Assert.AreEqual(3, chapter1.Elements.Count);
             Assert.AreEqual(3, chapter2.Elements.Count);
-            Assert.AreEqual(2, enuerate.ItemList.Count());
+            Assert.AreEqual(7, enuerate.ItemList.Count());
+        }
+
+        [Test]
+        public void prase_should_document_with_list_sublit_and_emph()
+        {
+            // Given 
+            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSublistAndEmph.tex");
+            var code = File.ReadAllText(uri.AbsolutePath);
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            var section = result.ElementAt(0) as Section;
+            var enumerate = section.Elements.ElementAt(0) as Enumerate;
+            var subList = enumerate.ItemList.ElementAt(0).Elements.ElementAt(1) as Enumerate;
+            var firstItemInSubList = subList.ItemList.ElementAt(0) as Item;
+
+            Assert.AreEqual(3, enumerate.ItemList.Count());
+            Assert.AreEqual(4, subList.ItemList.Count);
+            Assert.AreEqual(@"\emph{Viktning}. Vik $h(k)$ runt $k=0$ för att få $h(-k)$", firstItemInSubList.Elements.ElementAt(0).ToString());
         }
 
         #endregion Pasre Full Text

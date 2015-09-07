@@ -132,7 +132,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
                        @"\chapter{Chapter 2}" +
                        @"\section{Section 2}" +
                        @"This is some other text" +
-                       @"\end{document}", result);
+                       @"\end{document}", code.ToString());
 
         }
 

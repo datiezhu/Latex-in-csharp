@@ -134,7 +134,6 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
                 @"\section{Section 2}" +
                 @"This is some other text" +
                 @"\end{document}", code.ToString());
-
         }
 
         [Test]
@@ -155,7 +154,8 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         {
             new DocumentClass(),
             new Document(),
-            new Chapter()
+            new Chapter(),
+            new Section()
         };
 
         #endregion TestHelpers

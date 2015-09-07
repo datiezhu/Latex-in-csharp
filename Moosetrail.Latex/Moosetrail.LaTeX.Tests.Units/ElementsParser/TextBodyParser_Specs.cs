@@ -32,9 +32,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         #region CodeIndicators
 
         [Test]
-        public void codeIndicators_should_return_empty_list()
+        public void codeIndicators_should_include_emph()
         {
-            Assert.IsEmpty(SUT.CodeIndicators);
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\emph{");
         }
 
         #endregion CodeIndicators
@@ -203,6 +203,63 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
             // Then
             Assert.AreEqual(@"My item $-\infty$ och \$$\infty$", result.ToString());
+        }
+
+        [Test]
+        public void parseCode_should_handle_math_in_owrn_line_commands_by_including_them()
+        {
+            // Given 
+            var code =
+            new StringBuilder(@"My item \[-\infty\] och $\infty$" +
+                    @"\item My other item" +
+             @"\chapter{Chapter 2}" +
+             @"\section{Section 2}" +
+             @"This is some other text" +
+             @"\end{document}");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"My item \[-\infty\] och $\infty$", result.ToString());
+        }
+
+        [Test]
+        public void parseCode_should_handle_emph_clause_in_text_by_including_them()
+        {
+            // Given 
+            var code =
+                new StringBuilder(@"My item \emph{important} that then continues" +
+                                  @"\item My other item" +
+                                  @"\chapter{Chapter 2}" +
+                                  @"\section{Section 2}" +
+                                  @"This is some other text" +
+                                  @"\end{document}");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"My item \emph{important} that then continues", result.ToString());
+        }
+
+        [Test]
+        public void parseCode_should_handle_emph_clause_starting_a_text_by_including_them()
+        {
+            // Given 
+            var code =
+                new StringBuilder(@"\emph{important} that then continues" +
+                                  @"\item My other item" +
+                                  @"\chapter{Chapter 2}" +
+                                  @"\section{Section 2}" +
+                                  @"This is some other text" +
+                                  @"\end{document}");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"\emph{important} that then continues", result.ToString());
         }
 
         [Test]

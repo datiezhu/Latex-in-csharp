@@ -20,7 +20,16 @@ namespace Moosetrail.LaTeX.ElementsParser
         public static IEnumerable<string> CodeIndicators = new List<string>
         {
             @"\\section"
-        }; 
+        };
+
+        /// <summary>
+        /// Gets an element, same as the ParseCode but without anything set, just an empty object
+        /// </summary>
+        /// <returns>A LatexObject</returns>
+        public LaTeXElement GetEmptyElement()
+        {
+            return new Section();
+        }
 
         /// <summary>
         /// Sets the child elements of a given element
@@ -32,7 +41,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         public void SetChildElement(LaTeXElement element, params LaTeXElement[] children)
         {
             if (children.Any(x => x is DocumentClass) || children.Any(x => x is Document) ||
-                children.Any(x => x is Chapter))
+                children.Any(x => x is Chapter) || children.Any(x => x is Section))
                 throw new ArgumentException("A Section can't have a DocumentClass, Document or Chapter as a child");
             else if (!(element is Section))
                 throw new ArgumentException("The supplied element wasn't a Section, only Section is allowed");

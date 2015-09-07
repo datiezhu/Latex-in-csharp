@@ -12,10 +12,31 @@ namespace Moosetrail.LaTeX.ElementsParser
     /// </summary>
     public class TextBodyParser : LaTeXElementParser
     {
+        private static string escapedDollar = @"(\\\$)";
+        private static string newLineMathStart = @"\\\[";
+        private static string newLineMathEnd = @"\\\]";
+
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
         /// </summary>
-        public IEnumerable<string> CodeIndicators => new List<string>();
+        IEnumerable<string> LaTeXElementParser.CodeIndicators => CodeIndicators;
+
+        /// <summary>
+        /// Get all the code indicators that the element accepts as startingpoints to parse
+        /// </summary>
+        public static IEnumerable<string> CodeIndicators => new List<string>
+        {
+            @"\\emph{"
+        };
+
+        /// <summary>
+        /// Gets an element, same as the ParseCode but without anything set, just an empty object
+        /// </summary>
+        /// <returns>A LatexObject</returns>
+        public LaTeXElement GetEmptyElement()
+        {
+            return new TextBody();
+        }
 
         /// <summary>
         /// Get indicator to see if the code starts with text or not
@@ -24,7 +45,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// <returns></returns>
         public bool CodeStartsWithText(StringBuilder code)
         {
-            return !doesntStartWithText(code);
+            return isTextObject(code);
         }
 
         /// <summary>
@@ -50,29 +71,48 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
         public LaTeXElement ParseCode(StringBuilder code)
         {
-            if (doesntStartWithText(code))
+            if (!isTextObject(code))
                 throw new ArgumentException("The code didn't start with text but an code object");
 
-            var textMach = getTextMatch(code);
-            code.Replace(textMach.Groups[1].Value, "");
-            var str = new StringBuilder(textMach.Groups[1].Value);
+            var text = getStartTextPoint(code);
+            code.Replace(text, "", 0, text.Length);
+            var str = new StringBuilder(text);
 
-            getMoreOfTheString(code, str);
+            completeText(code, str);
 
-            var text = new TextBody
+            return new TextBody
             {
                 TheText = str.ToString()
             };
-
-            return text;
         }
 
-        private static bool doesntStartWithText(StringBuilder code)
+        private static bool isTextObject(StringBuilder code)
         {
-            return Regex.IsMatch(code.ToString(), @"^\\");
+            var doesNotStartWithBackslash = !Regex.IsMatch(code.ToString(), @"^\\");
+            var startsWithAllowedCode = Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators));
+            var isTextObject = doesNotStartWithBackslash || startsWithAllowedCode;
+            return isTextObject;
         }
 
-        private static Match getTextMatch(StringBuilder code)
+        private static string getStartTextPoint(StringBuilder code)
+        {
+            var textMach = Regex.Match(code.ToString(), @"^\\emph\{(.*?)\}");
+            if (textMach.Success)
+                return getStringWithEmpf(code, textMach);
+            else
+                textMach = serachForTextString(code);
+
+            return textMach.Groups[1].Value;
+        }
+
+        private static string getStringWithEmpf(StringBuilder code, Match textMach)
+        {
+            var continuesString = code.ToString().Replace(textMach.Value, "");
+            var nextPartMatch = serachForTextString(new StringBuilder(continuesString));
+            return textMach.Value + nextPartMatch.Groups[1].Value;
+        }
+
+        private static Match serachForTextString(StringBuilder code)
         {
             var textMach = Regex.Match(code.ToString(), @"^(.*?|\s)\\");
             if (!textMach.Success)
@@ -80,55 +120,68 @@ namespace Moosetrail.LaTeX.ElementsParser
             return textMach;
         }
 
-        private static void getMoreOfTheString(StringBuilder code, StringBuilder str)
+        private static void completeText(StringBuilder code, StringBuilder str)
         {
-            var hasModifedStr = getFullMath(code, str);
+            var hasModifedStr = false;
 
-            if (stopedAtEscapedChar(code) && !hasModifedStr)
-            {
-                str.AppendFormat(@"\{0}", getNextTextPart(code));
-                hasModifedStr = true;
-            }
-            
+            if (hasUnfinishedMath(str) || nextIsMath(code))
+                hasModifedStr = getFullMath(code, str);
+            else if (stopedAtEscapedSequenc(code))
+                hasModifedStr = getPassedEscapedChar(code, str);
 
             if(hasModifedStr)
-                getMoreOfTheString(code, str);
+                completeText(code, str);
+        }
+
+        private static bool hasUnfinishedMath(StringBuilder str)
+        {
+            return hasUnbalcedDollarMath(str) || hasUnblanacedNewLineMath(str);
+        }
+
+        private static bool hasUnbalcedDollarMath(StringBuilder str)
+        {
+            return (str.ToString().Count(x => x == '$') - Regex.Matches(str.ToString(), escapedDollar).Count) % 2 != 0;
+        }
+
+        private static bool hasUnblanacedNewLineMath(StringBuilder str)
+        {
+            return Regex.Matches(str.ToString(), newLineMathStart).Count != Regex.Matches(str.ToString(), newLineMathEnd).Count;
+        }
+
+        private static bool nextIsMath(StringBuilder code)
+        {
+            return Regex.IsMatch(code.ToString(), @"^" + newLineMathStart);
         }
 
         private static bool getFullMath(StringBuilder code, StringBuilder str)
         {
-            var hasModifedStr = false;
+            var nextPart = getNextTextPart(code);
+            str.AppendFormat(@"\{0}", nextPart);
 
-            while (hasUnfinishedMath(str))
-            {
-                var nextPart = getNextTextPart(code);
-                str.AppendFormat(@"\{0}", nextPart);
-                hasModifedStr = true;
-            }
-
-            return hasModifedStr;
-        }
-
-
-        private static bool hasUnfinishedMath(StringBuilder str)
-        {
-            return (str.ToString().Count(x => x == '$') - Regex.Matches(str.ToString(), @"(\\\$)").Count) % 2 != 0;
+            return true;
         }
 
         private static string getNextTextPart(StringBuilder code)
         {
             code.Remove(0, 1);
-            var text = getTextMatch(code);
+            var text = getStartTextPoint(code);
 
-            if (!String.IsNullOrWhiteSpace(text.Groups[1].Value)) { }
-            code.Replace(text.Groups[1].Value, "");
+            if (!string.IsNullOrWhiteSpace(text))
+                code.Replace(text, "", 0, text.Length);
 
-            return text.Groups[1].Value;
+            return text;
         }
 
-        private static bool stopedAtEscapedChar(StringBuilder code)
+        private static bool stopedAtEscapedSequenc(StringBuilder code)
         {
-            return Regex.IsMatch(code.ToString(), @"^\\\$");
+            return Regex.IsMatch(code.ToString(), @"^" + escapedDollar) || Regex.IsMatch(code.ToString(), @"^\\emph{");
         }
+
+        private static bool getPassedEscapedChar(StringBuilder code, StringBuilder str)
+        {
+            str.AppendFormat(@"\{0}", getNextTextPart(code));
+            return true;
+        }
+
     }
 }

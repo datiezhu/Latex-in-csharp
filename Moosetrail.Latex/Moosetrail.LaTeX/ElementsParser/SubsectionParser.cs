@@ -20,7 +20,16 @@ namespace Moosetrail.LaTeX.ElementsParser
         public static IEnumerable<string> CodeIndicators = new List<string>
         {
             @"\\subsection"
-        }; 
+        };
+
+        /// <summary>
+        /// Gets an element, same as the ParseCode but without anything set, just an empty object
+        /// </summary>
+        /// <returns>A LatexObject</returns>
+        public LaTeXElement GetEmptyElement()
+        {
+            return new Subsection();
+        }
 
         /// <summary>
         /// Sets the child elements of a given element
