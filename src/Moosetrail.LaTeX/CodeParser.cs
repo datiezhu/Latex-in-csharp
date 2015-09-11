@@ -228,9 +228,12 @@ namespace Moosetrail.LaTeX
         {
             var match = Regex.Match(code.ToString(), @"\\" + command + @"\{([^}]+)\}");
 
-            if(match.Success)
-                code.Replace(match.Value, "");
-
+            if (match.Success)
+            {
+                var startIndex = code.ToString().IndexOf(match.Value, StringComparison.Ordinal);
+                code.Replace(match.Value, "", startIndex, match.Value.Length);
+            }
+                
             return match.Groups[1].Value;
         }
 
