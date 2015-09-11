@@ -38,6 +38,24 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
             Assert.IsEmpty(SUT.Elements);
         }
 
-        #endregion Constructor 
+        #endregion Constructor
+
+        #region ToString
+
+        [Test]
+        public void toString_should_return_the_code_for_the_Item()
+        {
+            // Given 
+            SUT = new Item();
+            SUT.Elements.Add(new TextBody("My text"));
+
+            // When 
+            var result = SUT.ToString();
+
+            // Then
+            Assert.AreEqual(@"\item My text" + "\n ", result);
+        }
+
+        #endregion ToString
     }
 }

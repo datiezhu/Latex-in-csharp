@@ -1,4 +1,6 @@
-﻿namespace Moosetrail.LaTeX.Elements
+﻿using Moosetrail.LaTeX.CodeGenerator;
+
+namespace Moosetrail.LaTeX.Elements
 {
     /// <summary>
     /// Object represents a textblock in a latex element
@@ -61,7 +63,8 @@
         /// </returns>
         public override string ToString()
         {
-            return TheText;
+            var codeGenerator = new TextBodyCodeGenerator();
+            return codeGenerator.Generate(this);
         }
     }
 }

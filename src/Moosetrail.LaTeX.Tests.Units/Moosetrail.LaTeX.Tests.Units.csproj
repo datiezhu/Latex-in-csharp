@@ -54,6 +54,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CodeGenerator\EnumerateCodeGenerator_Specs.cs" />
+    <Compile Include="CodeGenerator\ItemCodeGenerator_Specs.cs" />
+    <Compile Include="CodeGenerator\TextBodyCodeGenerator_Specs.cs" />
     <Compile Include="ElementsParser\EnumerateParser_Specs.cs" />
     <Compile Include="ElementsParser\ItemParser_Specs.cs" />
     <Compile Include="ElementsParser\SubsubsectionParser_Specs.cs" />

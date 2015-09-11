@@ -27,15 +27,29 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void should_be_LaTeXElementParser()
         {
-            Assert.IsInstanceOf<LaTeXElementParser>(SUT);
+            Assert.IsInstanceOf<LaTexElementParser<Item>>(SUT);
         }
+
+        #region GetEmptyElement
+
+        [Test]
+        public void getEmptyElement_should_return_item()
+        {
+            // When 
+            var result = SUT.GetEmptyElement();
+
+            // Then
+            Assert.IsNotNull(result);
+        }
+
+        #endregion GetEmptyElement
 
         #region CodeIndicators
 
         [Test]
         public void codeIndicators_should_contain_begin_document()
         {
-            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\item");
+            CollectionAssert.Contains(((LaTexElementParser<Item>)SUT).CodeIndicators, @"\\item");
         }
 
         #endregion CodeIndicators
@@ -56,17 +70,6 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Then
             Assert.AreSame(text1, item.Elements[0]);
             Assert.AreSame(text2, item.Elements[1]);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(_higherHierarchyElements))]
-        public void setChildElement_should_throw_if_child_is_document_element(LaTeXElement element)
-        {
-            // Given 
-
-            // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new Section(),element));
-            Assert.AreEqual("An Item can't have a DocumentClass, Document Chapter or other element that is concidered to organize information", ex.Message);
         }
 
         [Test]
@@ -92,13 +95,15 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
-        public void setChildElement_should_throw_if_suplied_element_isnt_a_item()
+        [TestCaseSource(nameof(_higherHierarchyElements))]
+        public void setChildElement_should_throw_if_hirarcy_is_higher(LaTeXElement element)
         {
-            // Given
+            // When 
+            var item = new Item();
 
             // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new TextBody()));
-            Assert.AreEqual("The supplied element wasn't a Item, only Item is allowed", ex.Message);
+            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(item, element));
+            Assert.AreEqual("An Item can't have a DocumentClass, Document Chapter or other element that is concidered to organize information", ex.Message);
         }
 
         #endregion SetChildElement
