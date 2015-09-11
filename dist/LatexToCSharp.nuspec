@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>LatexToCSharp</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <authors>Johanna Petersson</authors>
     <owners>Moosetrail Software</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
