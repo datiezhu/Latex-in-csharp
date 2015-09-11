@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Moosetrail.LaTeX.CodeGenerator;
 
 namespace Moosetrail.LaTeX.Elements
@@ -9,10 +8,7 @@ namespace Moosetrail.LaTeX.Elements
     /// </summary>
     public class Enumerate : LaTeXElement
     {
-        private const string BeginEnumerate = @"\begin{enumerate}";
-        private const string EndEnumerate = @"\end{enumerate}";
-
-        private StringBuilder _code;
+        public static string Pattern = @"\\begin\{enumerate\}(.*|\s)\\end\{enumerate\}";
 
         /// <summary>
         /// Creates a new instance of the Enumerate class

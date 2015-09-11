@@ -5,7 +5,7 @@ namespace Moosetrail.LaTeX.Elements
     /// <summary>
     /// Class representing a Section in LaTeX code
     /// </summary>
-    public class Section : LaTeXElement
+    public class Section : ContentContext
     {
         /// <summary>
         /// Creates a new instance of the Section class

@@ -23,8 +23,10 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         [Test]
         public void should_be_LaTeXElement()
         {
-            Assert.IsInstanceOf<LaTeXElement>(SUT);
+            Assert.IsInstanceOf<ContentContext>(SUT);
         }
+
+        
 
         #region Constrcutor Empty
 

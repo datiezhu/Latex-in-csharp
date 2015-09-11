@@ -58,6 +58,7 @@
     <Compile Include="ElementsParser\DocumentParser.cs" />
     <Compile Include="ElementsParser\TextBodyParser.cs" />
     <Compile Include="Elements\Chapter.cs" />
+    <Compile Include="Elements\ContentContext.cs" />
     <Compile Include="Elements\CustomCommand.cs" />
     <Compile Include="Elements\Document.cs" />
     <Compile Include="Elements\DocumentClass.cs" />
