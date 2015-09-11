@@ -26,8 +26,22 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void should_be_LaTeXElementParser()
         {
-            Assert.IsInstanceOf<LaTeXElementParser>(SUT);
+            Assert.IsInstanceOf<LaTexElementParser<TextBody>>(SUT);
         }
+
+        #region GetEmptyElement
+
+        [Test]
+        public void getEmptyElement_should_return_TextObject()
+        {
+            // When 
+            var result = SUT.GetEmptyElement();
+
+            // Then
+            Assert.IsNotNull(result);
+        }
+
+        #endregion GetEmptyElement
 
         #region CodeIndicators
 

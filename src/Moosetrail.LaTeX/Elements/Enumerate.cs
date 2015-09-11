@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Moosetrail.LaTeX.CodeGenerator;
 
 namespace Moosetrail.LaTeX.Elements
 {
@@ -41,20 +42,38 @@ namespace Moosetrail.LaTeX.Elements
         }
 
         /// <summary>
-        /// Converts the object into latex code
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <returns>A string with latex code that represents this object in latex format</returns>
-        public string ToCode()
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
         {
-            _code = new StringBuilder(BeginEnumerate);
-            foreach (var element in ItemList)
-            {
-                _code.AppendFormat(@"\item {0} ", ((Item)element).Elements[0]);
-            }
-            _code.Append(EndEnumerate);
-
-            return _code.ToString();
+            var codeGenerator = new EnumerateCodeGenerator();
+            return codeGenerator.Generate(this);
         }
 
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object.
+        /// </summary>
+        /// <returns>
+        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The object to compare with the current object. </param>
+        public override bool Equals(object obj)
+        {
+            return ToString().Equals(obj.ToString());
+        }
+
+        /// <summary>
+        /// Serves as the default hash function. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current object.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
     }
 }

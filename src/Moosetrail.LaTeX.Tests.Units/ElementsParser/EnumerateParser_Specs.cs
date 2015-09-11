@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Moosetrail.LaTeX.Elements;
@@ -28,7 +27,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void should_be_LaTeXElementParser()
         {
-            Assert.IsInstanceOf<LaTeXElementParser>(SUT);
+            Assert.IsInstanceOf<LaTexElementParser<Enumerate>>(SUT);
         }
 
         #region CodeIndicators
@@ -36,10 +35,24 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void codeIndicators_should_contain_begin_document()
         {
-            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\begin{enumerate}");
+            CollectionAssert.Contains(((LaTexElementParser<Enumerate>)SUT).CodeIndicators, @"\\begin{enumerate}");
         }
 
         #endregion CodeIndicators
+
+        #region GetEmptyElement
+
+        [Test]
+        public void getEmptyElement_should_return_an_enumerate()
+        {
+            // When 
+            var result = SUT.GetEmptyElement();
+
+            // Then
+            Assert.IsNotNull(result);
+        }
+
+        #endregion GetEmptyElement
 
         #region SetChildElement
 
@@ -76,16 +89,6 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(enumerate));
             Assert.AreEqual("No child elements supplied to set as child", ex.Message);
-        }
-
-        [Test]
-        public void setChildElement_should_throw_if_suplied_element_isnt_a_item()
-        {
-            // Given
-
-            // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new Item()));
-            Assert.AreEqual("The supplied element wasn't a Enumerate, only Enumerate is allowed", ex.Message);
         }
 
         #endregion SetChildElement

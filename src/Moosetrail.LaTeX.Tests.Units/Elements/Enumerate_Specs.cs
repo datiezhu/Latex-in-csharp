@@ -79,23 +79,26 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
         #endregion AddItem
 
-        #region ToCode
+        #region ToString
 
         [Test]
-        public void toCode_should_return_valid_latex_text()
+        public void toString_should_return_code_for_enumerate()
         {
             // Given 
-            SUT.AddItem("My first text");
-            SUT.AddItem("My second text");
+            SUT.AddItem("My item");
+            SUT.AddItem("My second item");
 
             // When 
-            var result = SUT.ToCode();
+            var result = SUT.ToString();
 
             // Then
-            Assert.AreEqual(@"\begin{enumerate}\item My first text \item My second text \end{enumerate}", result);
+            Assert.AreEqual(@"\begin{enumerate}" + "\n\t" +
+                @"\item My item" + "\n \t" +
+                @"\item My second item" + "\n" +
+                @" \end{enumerate}" + "\n", result);
         }
 
-        #endregion ToCode
+        #endregion ToString
 
         #region TestHelpers
 
