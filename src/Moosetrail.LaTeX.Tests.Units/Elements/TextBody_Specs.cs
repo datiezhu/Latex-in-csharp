@@ -114,7 +114,6 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
             return other;
         }
 
-
         #endregion TestHelpers
     }
 } 
