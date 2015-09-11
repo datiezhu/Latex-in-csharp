@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LatexToCSharp</id>
+    <version>1.0.0</version>
+    <authors>Johanna Petersson</authors>
+    <owners>Moosetrail Software</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Moosetrail Softwars class library for parsing Latex code into Objects</description>
+    <copyright>Copyright 2015</copyright>
+    <tags>LaTeX C#</tags>
+  </metadata>
+</package>
