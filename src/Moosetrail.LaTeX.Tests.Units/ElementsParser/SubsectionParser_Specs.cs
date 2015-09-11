@@ -124,7 +124,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
                 @"\end{document}");
 
             // When 
-           var result = SUT.ParseCode(code);
+           SUT.ParseCode(code);
 
             // Then
             Assert.AreEqual(

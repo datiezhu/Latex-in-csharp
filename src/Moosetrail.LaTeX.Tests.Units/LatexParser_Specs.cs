@@ -233,6 +233,65 @@ namespace Moosetrail.LaTeX.Tests.Units
 
         #endregion Pasre Full Text
 
+        #region Parse Strucutred document
+
+        [Test]
+        public void praseStructuredDocument_should_find_chapters()
+        {
+            // Given 
+            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
+            var code = File.ReadAllText(uri.AbsolutePath);
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            var docClass = result.ElementAt(0) as DocumentClass;
+            Assert.AreEqual(2, docClass.Document.Elements.Count);
+            Assert.IsTrue(docClass.Document.Elements.All(x => x is Chapter));
+        }
+        [Test]
+        public void praseStructuredDocument_should_find_sections_in_chapter()
+        {
+            // Given 
+            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
+            var code = File.ReadAllText(uri.AbsolutePath);
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            var docClass = result.ElementAt(0) as DocumentClass;
+            foreach (var chapter in docClass.Document.Elements.Select(x => x as ContentContext))
+            {
+                Assert.AreEqual(2, chapter.Elements.Count);
+                Assert.IsTrue(chapter.Elements.All(x => x is Section));
+            }
+        }
+        [Test]
+        public void praseStructuredDocument_should_find_subsections_in_section()
+        {
+            // Given 
+            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
+            var code = File.ReadAllText(uri.AbsolutePath);
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            var docClass = result.ElementAt(0) as DocumentClass;
+            foreach (var chapter in docClass.Document.Elements.Select(x => x as ContentContext))
+            {
+                foreach (var section in chapter.Elements.Select(x => x as ContentContext))
+                {
+                    Assert.AreEqual(2, section.Elements.Count);
+                    Assert.IsTrue(section.Elements.All(x => x is Subsection));
+                }
+            }
+        }
+
+        #endregion Parse Strucutred document
+
         #region TestHelpers
 
         private const string BasicRepeatDocument =

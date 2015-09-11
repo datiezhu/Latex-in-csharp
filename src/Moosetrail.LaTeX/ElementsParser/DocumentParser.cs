@@ -80,14 +80,14 @@ namespace Moosetrail.LaTeX.ElementsParser
                 code.Remove(0, endDocumentPattern.Length-1);
                 return null;
             }
-               
 
             var doc = new Document();
 
             removeDocumentStart(code);
-            setAuthorAndTitle(doc, code);
             handleMakeTitle(doc, code);
-
+            doc.Author = CodeParser.SimpleContent("author", code);
+            doc.Title = CodeParser.SimpleContent("title", code);
+        
             return doc;
         }
 
@@ -101,12 +101,6 @@ namespace Moosetrail.LaTeX.ElementsParser
             doc.HasMakeTitle = codeProcess.ToString().Contains(makeTitlePattern);
 
             codeProcess.Replace(makeTitlePattern, "");
-        }
-
-        private static void setAuthorAndTitle(Document doc, StringBuilder codeProcess)
-        {
-            doc.Author = CodeParser.SimpleContent("author", codeProcess);
-            doc.Title = CodeParser.SimpleContent("title", codeProcess);
         }
     }
 }
