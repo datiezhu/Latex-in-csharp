@@ -157,7 +157,8 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             new Document(),
             new Chapter(),
             new Section(),
-            new Subsection()
+            new Subsection(),
+            new Subsubsection()
         };
 
         #endregion TestHelpers

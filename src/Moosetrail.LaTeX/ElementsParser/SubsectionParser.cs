@@ -41,7 +41,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         public void SetChildElement(LaTeXElement element, params LaTeXElement[] children)
         {
             if (children.Any(x => x is DocumentClass) || children.Any(x => x is Document) ||
-                children.Any(x => x is Chapter) || children.Any(x => x is Section))
+                children.Any(x => x is Chapter) || children.Any(x => x is Section) || children.Any(x => x is Subsection))
                 throw new ArgumentException("A Subsection can't have a DocumentClass, Document, Chapter or Section as a child");
             else if (!(element is Subsection))
                 throw new ArgumentException("The supplied element wasn't a Subsection, only Subsection is allowed");
