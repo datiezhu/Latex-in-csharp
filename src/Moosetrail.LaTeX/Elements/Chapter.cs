@@ -5,7 +5,7 @@ namespace Moosetrail.LaTeX.Elements
     /// <summary>
     /// Class representing a latex chapter
     /// </summary>
-    public class Chapter : LaTeXElement
+    public class Chapter : ContentContext
     {
         /// <summary>
         /// Creates a new isntance of the Chpter class

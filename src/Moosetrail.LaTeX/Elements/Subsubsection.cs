@@ -5,7 +5,7 @@ namespace Moosetrail.LaTeX.Elements
     /// <summary>
     /// Class representing a Subsubsection in LaTeX code
     /// </summary>
-    public class Subsubsection : LaTeXElement
+    public class Subsubsection : ContentContext
     {
         /// <summary>
         /// Creates a new instance of the Subsubsection class
