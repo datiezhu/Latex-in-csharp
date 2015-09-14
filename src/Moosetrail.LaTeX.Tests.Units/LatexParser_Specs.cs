@@ -292,6 +292,44 @@ namespace Moosetrail.LaTeX.Tests.Units
 
         #endregion Parse Strucutred document
 
+        #region Parse Enumerate
+
+        [Test]
+        public void parse_should_should_handle_enumerate_with_math()
+        {
+            // Given 
+            var code = @"\begin{enumerate}	\item är parvis oförenliga \(H_1, \dots, H_n\)	\item \(H_1 \cup \dots \cup H_n = \Omega\) \end{enumerate}";
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            Assert.IsNotNull(result);
+        }
+
+        #endregion Parse Enumerate
+
+        #region ParseText
+
+        [Test]
+        public void praseTextWithMthCommands_should_parse_correcty()
+        {
+            // Given 
+            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/MathWithInlineCommands.tex");
+            var code = File.ReadAllText(uri.AbsolutePath);
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            var body = result.ElementAt(0) as TextBody;
+            Assert.AreEqual(
+                @"Definiera den likformigt fördelat för en kontinuerligt s.v. $X$ - Om den s.v. $X$ har täthetsfunktionen \[ f_X(x) =\begin{cases}\frac{1}{(b-a)} & \quad \text{om } a < x < b\\ 0  & \quad  \text{annars}\\ \end{cases} \] sägs $X$ vara likformigt fördelad",
+                body.ToString());
+        }
+
+        #endregion ParseText
+
         #region TestHelpers
 
         private const string BasicRepeatDocument =

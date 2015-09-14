@@ -271,7 +271,6 @@ namespace Moosetrail.LaTeX
             {
                 sb.AppendFormat("|{0}", indicator);
             }
-            sb.Remove(sb.Length - 1, 1);
             sb.Remove(2, 1);
             sb.Append(")");
 

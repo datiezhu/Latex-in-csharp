@@ -50,6 +50,16 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         {
             CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\emph{");
         }
+        [Test]
+        public void codeIndicators_should_include_inline_math()
+        {
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\(");
+        }
+        [Test]
+        public void codeIndicators_should_include_newLine_math()
+        {
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\[");
+        }
 
         #endregion CodeIndicators
 
@@ -237,6 +247,24 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Then
             Assert.AreEqual(@"My item \[-\infty\] och $\infty$", result.ToString());
         }
+        [Test]
+        public void parseCode_should_handle_math_line_commands_with_math_commands_by_including_them()
+        {
+            // Given 
+            var code =
+            new StringBuilder(@"My item \(H_1, \dots, H_n\)" +
+                    @"\item My other item" +
+             @"\chapter{Chapter 2}" +
+             @"\section{Section 2}" +
+             @"This is some other text" +
+             @"\end{document}");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"My item \(H_1, \dots, H_n\)", result.ToString());
+        }
 
         [Test]
         public void parseCode_should_handle_inline_math_commands_by_including_them()
@@ -293,6 +321,20 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
             // Then
             Assert.AreEqual(@"\emph{important} that then continues", result.ToString());
+        }
+
+        [Test]
+        public void parseCode_should_handle_math_with_inner_command_blocks()
+        {
+            // Given 
+            var code = new StringBuilder(@"Definiera den likformigt fördelat för en kontinuerligt s.v. $X$ - Om den s.v. $X$ har täthetsfunktionen \[ f_X(x) =\begin{cases}\frac{1}{(b-a)} & \quad \text{om } a < x < b\\ 0  & \quad  \text{annars}\\ \end{cases} \] sägs $X$ vara likformigt fördelad");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"Definiera den likformigt fördelat för en kontinuerligt s.v. $X$ - Om den s.v. $X$ har täthetsfunktionen \[ f_X(x) =\begin{cases}\frac{1}{(b-a)} & \quad \text{om } a < x < b\\ 0  & \quad  \text{annars}\\ \end{cases} \] sägs $X$ vara likformigt fördelad",
+                result.ToString());
         }
 
         [Test]
