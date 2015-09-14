@@ -239,6 +239,25 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
+        public void parseCode_should_handle_inline_math_commands_by_including_them()
+        {
+            // Given 
+            var code =
+            new StringBuilder(@"My item \(-\infty\) och \(\infty\)" +
+                    @"\item My other item" +
+             @"\chapter{Chapter 2}" +
+             @"\section{Section 2}" +
+             @"This is some other text" +
+             @"\end{document}");
+
+            // When 
+            var result = SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"My item \(-\infty\) och \(\infty\)", result.ToString());
+        }
+
+        [Test]
         public void parseCode_should_handle_emph_clause_in_text_by_including_them()
         {
             // Given 
