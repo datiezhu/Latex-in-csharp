@@ -15,6 +15,8 @@ namespace Moosetrail.LaTeX.ElementsParser
         private const string EscapedDollar = @"(\\\$)";
         private const string NewLineMathStart = @"\\\[";
         private const string NewLineMathEnd = @"\\\]";
+        private const string InLineMathStart = @"\\\(";
+        private const string InLineMathEnd = @"\\\)";
 
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
@@ -140,7 +142,7 @@ namespace Moosetrail.LaTeX.ElementsParser
 
         private static bool hasUnfinishedMath(StringBuilder str)
         {
-            return hasUnbalcedDollarMath(str) || hasUnblanacedNewLineMath(str);
+            return hasUnbalcedDollarMath(str) || hasUnblanacedNewLineMath(str) || hasUnblanacedInLineMath(str);
         }
 
         private static bool hasUnbalcedDollarMath(StringBuilder str)
@@ -153,9 +155,14 @@ namespace Moosetrail.LaTeX.ElementsParser
             return Regex.Matches(str.ToString(), NewLineMathStart).Count != Regex.Matches(str.ToString(), NewLineMathEnd).Count;
         }
 
+        private static bool hasUnblanacedInLineMath(StringBuilder str)
+        {
+            return Regex.Matches(str.ToString(), InLineMathStart).Count != Regex.Matches(str.ToString(), InLineMathEnd).Count;
+        }
+
         private static bool nextIsMath(StringBuilder code)
         {
-            return Regex.IsMatch(code.ToString(), @"^" + NewLineMathStart);
+            return Regex.IsMatch(code.ToString(), @"^" + NewLineMathStart) || Regex.IsMatch(code.ToString(), @"^" + InLineMathStart);
         }
 
         private static bool getFullMath(StringBuilder code, StringBuilder str)
