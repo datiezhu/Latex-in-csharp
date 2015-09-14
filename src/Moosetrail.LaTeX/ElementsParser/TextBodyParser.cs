@@ -23,7 +23,9 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// </summary>
         public static IEnumerable<string> CodeIndicators => new List<string>
         {
-            @"\\emph{"
+            @"\\emph{",
+            @"\\\(",
+            @"\\\["
         };
 
         /// <summary>
@@ -48,6 +50,14 @@ namespace Moosetrail.LaTeX.ElementsParser
         public bool CodeStartsWithText(StringBuilder code)
         {
             return isTextObject(code);
+        }
+
+        private static bool isTextObject(StringBuilder code)
+        {
+            var doesNotStartWithBackslash = !Regex.IsMatch(code.ToString(), @"^\\");
+            var startsWithAllowedCode = Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators));
+            var isTextObject = doesNotStartWithBackslash || startsWithAllowedCode;
+            return isTextObject;
         }
 
         /// <summary>
@@ -89,19 +99,17 @@ namespace Moosetrail.LaTeX.ElementsParser
         }
 
 
-        private static bool isTextObject(StringBuilder code)
-        {
-            var doesNotStartWithBackslash = !Regex.IsMatch(code.ToString(), @"^\\");
-            var startsWithAllowedCode = Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators));
-            var isTextObject = doesNotStartWithBackslash || startsWithAllowedCode;
-            return isTextObject;
-        }
+      
 
         private static string getStartTextPoint(StringBuilder code)
         {
             var textMach = Regex.Match(code.ToString(), @"^\\emph\{(.*?)\}");
             if (textMach.Success)
                 return getStringWithEmpf(code, textMach);
+            else if (Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators)))
+            {
+                return $@"\{getNextTextPart(code)}";
+            }
             else
                 textMach = serachForTextString(code);
 
@@ -119,7 +127,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         {
             var textMach = Regex.Match(code.ToString(), @"^(.*?|\s)\\");
             if (!textMach.Success)
-                textMach = Regex.Match(code.ToString(), @"^(.*\s)");
+                textMach = Regex.Match(code.ToString(), @"^(.*|\s)");
             return textMach;
         }
 
@@ -168,8 +176,19 @@ namespace Moosetrail.LaTeX.ElementsParser
         private static bool getFullMath(StringBuilder code, StringBuilder str)
         {
             var nextPart = getNextTextPart(code);
-            str.AppendFormat(@"\{0}", nextPart);
-
+            if (!String.IsNullOrWhiteSpace(nextPart))
+                str.AppendFormat(@"\{0}", nextPart);
+            else if (String.IsNullOrEmpty(nextPart))
+            {
+                str.Append(@"\\");
+                nextPart = getNextTextPart(code);
+                str.AppendFormat(@"{0}", nextPart);
+            }
+            else
+            {
+                str.Append(" ");
+            }
+                
             return true;
         }
 
@@ -180,6 +199,10 @@ namespace Moosetrail.LaTeX.ElementsParser
 
             if (!string.IsNullOrWhiteSpace(text))
                 code.Replace(text, "", 0, text.Length);
+
+            var s = code.ToString().TrimStart();
+            code.Clear();
+            code.Append(s);
 
             return text;
         }
