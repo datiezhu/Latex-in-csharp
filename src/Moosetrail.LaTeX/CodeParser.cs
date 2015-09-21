@@ -209,10 +209,9 @@ namespace Moosetrail.LaTeX
             {
                 if (_elementsList[i].GetType() == searchingForType)
                 {
-                    int strtAt = i + 1;
-                    int remoevEl = _elementsList.Count - i - 1;
-                    _elementsList.RemoveRange(i +1, _elementsList.Count - i-1);
-                    _parserList.RemoveRange(i + 1, _parserList.Count - i-1);
+                    var remoevEl = _elementsList.Count - i - 1;
+                    _elementsList.RemoveRange(i, remoevEl);
+                    _parserList.RemoveRange(i, remoevEl);
                     break;
                 }
             }
