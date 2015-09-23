@@ -176,9 +176,9 @@ namespace Moosetrail.LaTeX.ElementsParser
         private static bool getFullMath(StringBuilder code, StringBuilder str)
         {
             var nextPart = getNextTextPart(code);
-            if (!String.IsNullOrWhiteSpace(nextPart))
+            if (!string.IsNullOrWhiteSpace(nextPart))
                 str.AppendFormat(@"\{0}", nextPart);
-            else if (String.IsNullOrEmpty(nextPart))
+            else if (string.IsNullOrEmpty(nextPart))
             {
                 str.Append(@"\\");
                 nextPart = getNextTextPart(code);

@@ -226,7 +226,7 @@ namespace Moosetrail.LaTeX.Tests.Units
             var subList = enumerate.ItemList.ElementAt(0).Elements.ElementAt(1) as Enumerate;
             var firstItemInSubList = subList.ItemList.ElementAt(0) as Item;
 
-            Assert.AreEqual(3, enumerate.ItemList.Count());
+            Assert.AreEqual(3, enumerate.ItemList.Count);
             Assert.AreEqual(4, subList.ItemList.Count);
             Assert.AreEqual(@"\emph{Viktning}. Vik $h(k)$ runt $k=0$ för att få $h(-k)$", firstItemInSubList.Elements.ElementAt(0).ToString());
         }
@@ -305,6 +305,20 @@ namespace Moosetrail.LaTeX.Tests.Units
 
             // Then
             Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void parse_should_should_handle_sub_enumerate_text_after()
+        {
+            // Given 
+            var code = @"\begin{enumerate}	\item är parvis oförenliga \(H_1, \dots, H_n\) \begin{enumerate}\item My subitem \end{enumerate} My trailing text \end{enumerate}";
+
+            // When 
+            var result = LatexParser.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(1, result.Count(), "To many parent elements");
+            Assert.AreEqual(1, ((Enumerate)result.ElementAt(0)).ItemList.Count, "To many items");
         }
 
         #endregion Parse Enumerate
