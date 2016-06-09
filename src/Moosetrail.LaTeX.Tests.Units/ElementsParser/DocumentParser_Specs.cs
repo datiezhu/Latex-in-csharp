@@ -307,6 +307,32 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\maketitle");
         }
 
+        [Test]
+        public void codeIndicators_should_contain_begin_document_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\begin{document}");
+        }
+        [Test]
+        public void codeIndicators_should_contain_end_document_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\end{document}");
+        }
+        [Test]
+        public void codeIndicators_should_contain_author_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\author");
+        }
+        [Test]
+        public void codeIndicators_should_contain_title_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\title");
+        }
+        [Test]
+        public void codeIndicators_should_contain_maketitle_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\maketitle");
+        }
+
         #endregion CodeIndicators
 
         #region TestHelpers

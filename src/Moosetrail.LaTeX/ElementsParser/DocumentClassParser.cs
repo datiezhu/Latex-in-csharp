@@ -19,13 +19,16 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// </summary>
         public static IEnumerable<string> CodeIndicators => new List<string>(packageIndicators)
         {
-            @"\\documentclass"
+            @"\\documentclass",
+            @"\\\\documentclass"
         };
 
         private static IEnumerable<string> packageIndicators => new List<string>
         {
             @"\\usepackage\{([^}]+)\}",
-            @"\\usepackage\[([^}]+)\}"
+            @"\\usepackage\[([^}]+)\}",
+            @"\\\\usepackage\{([^}]+)\}",
+            @"\\\\usepackage\[([^}]+)\}"
         };
 
         /// <summary>

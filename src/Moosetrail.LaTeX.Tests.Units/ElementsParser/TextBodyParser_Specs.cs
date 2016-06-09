@@ -61,6 +61,22 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\[");
         }
 
+        [Test]
+        public void codeIndicators_should_include_emph_handled()
+        {
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\\emph{");
+        }
+        [Test]
+        public void codeIndicators_should_include_inline_math_handled()
+        {
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\\\(");
+        }
+        [Test]
+        public void codeIndicators_should_include_newLine_math_handled()
+        {
+            CollectionAssert.Contains(TextBodyParser.CodeIndicators, @"\\\\\[");
+        }
+
         #endregion CodeIndicators
 
         #region SetChildElement

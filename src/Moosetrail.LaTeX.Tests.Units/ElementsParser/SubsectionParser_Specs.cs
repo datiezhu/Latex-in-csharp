@@ -37,6 +37,12 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         {
             CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\subsection");
         }
+        [Test]
+        public void codeIndicators_should_contain_begin_subsection_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\subsection");
+        }
+
 
         #endregion CodeIndicators
 

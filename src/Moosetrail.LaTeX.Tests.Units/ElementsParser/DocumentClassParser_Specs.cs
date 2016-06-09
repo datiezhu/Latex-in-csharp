@@ -86,6 +86,45 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             CollectionAssert.Contains(result, @"\\usepackage\[([^}]+)\}");
         }
 
+        [Test]
+        public void codeIndicators_should_return_documentClass_handled()
+        {
+            // Given 
+            LaTeXElementParser sut = new DocumentClassParser();
+
+            // When
+            var result = sut.CodeIndicators;
+
+            // Then
+            CollectionAssert.Contains(result, @"\\\\documentclass");
+        }
+
+        [Test]
+        public void codeIndicators_should_return_usePackages_witout_parameter_handled()
+        {
+            // Given 
+            LaTeXElementParser sut = new DocumentClassParser();
+
+            // When
+            var result = sut.CodeIndicators;
+
+            // Then
+            CollectionAssert.Contains(result, @"\\\\usepackage\{([^}]+)\}");
+        }
+
+        [Test]
+        public void codeIndicators_should_return_usePackages_with_parameter_handled()
+        {
+            // Given 
+            LaTeXElementParser sut = new DocumentClassParser();
+
+            // When
+            var result = sut.CodeIndicators;
+
+            // Then
+            CollectionAssert.Contains(result, @"\\\\usepackage\[([^}]+)\}");
+        }
+
         #endregion CodeIndicators
 
         #region ParseCode
