@@ -10,11 +10,18 @@ namespace Moosetrail.LaTeX
     /// </summary>
     internal static class TextFormatStrings
     {
-        public static List<string> List = new List<string>
+        public static List<string> SingleFormat = new List<string>
         {
             "\n",
             "\r",
             "\t",
+        };
+
+        public static List<string> DoubleFormat = new List<string>
+        {
+            @"\\n",
+            @"\\t",
+            @"\\r"
         };
 
         public static string RemoveStartingFormating(string str)
@@ -26,9 +33,14 @@ namespace Moosetrail.LaTeX
         public static StringBuilder RemoveStartingFormating(StringBuilder str)
         {
             var s = str.ToString();
-            while (List.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
+
+            while (DoubleFormat.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
             {
-                var d = str.ToString();
+                str.Remove(0, str.ToString().StartsWith(" ") ? 1 : 2);
+            }
+
+            while (SingleFormat.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
+            {
                 str.Remove(0, 1);
             }
 
@@ -37,7 +49,7 @@ namespace Moosetrail.LaTeX
 
         public static bool EmptyString(string str)
         {
-            var stringParts = str.Split(List.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            var stringParts = str.Split(SingleFormat.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
             return stringParts.Length == 0;
         }
