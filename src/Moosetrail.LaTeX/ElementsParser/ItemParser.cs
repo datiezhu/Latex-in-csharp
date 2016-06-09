@@ -22,7 +22,8 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// </summary>
         public static IEnumerable<string> CodeIndicators = new List<string>
         {
-            @"\\item"
+            @"\\item",
+            @"\\\\item"
         };
 
         /// <summary>

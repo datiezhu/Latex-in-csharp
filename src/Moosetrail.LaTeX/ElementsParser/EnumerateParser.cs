@@ -22,7 +22,9 @@ namespace Moosetrail.LaTeX.ElementsParser
         public static IEnumerable<string> CodeIndicators = new List<string>
         {
             BeginCommand,
-            @"\\end{enumerate}"
+            @"\\\\begin{enumerate}",
+            @"\\end{enumerate}",
+            @"\\\\end{enumerate}"
         };
 
         /// <summary>

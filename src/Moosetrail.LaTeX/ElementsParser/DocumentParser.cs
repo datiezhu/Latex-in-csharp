@@ -30,7 +30,13 @@ namespace Moosetrail.LaTeX.ElementsParser
             @"\\end{document}",
             @"\\author",
             @"\\title",
-            @"\\maketitle"
+            @"\\maketitle",
+
+            @"\\\\begin{document}",
+            @"\\\\end{document}",
+            @"\\\\author",
+            @"\\\\title",
+            @"\\\\maketitle"
         };
 
         /// <summary>

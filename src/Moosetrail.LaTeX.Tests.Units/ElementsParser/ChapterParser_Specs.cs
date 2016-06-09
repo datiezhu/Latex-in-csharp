@@ -38,6 +38,12 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\chapter");
         }
 
+        [Test]
+        public void codeIndicators_should_contain_chapter_handled()
+        {
+            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\chapter");
+        }
+
         #endregion CodeIndicators
 
         #region SetChildElement
@@ -147,6 +153,20 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.ParseCode(new StringBuilder("My code")));
             Assert.AreEqual("The code didn't start with an allowed indicator", ex.Message);
+        }
+
+        [Test]
+        public void praseCode_should_find_chapter_from_escaped_handled_string()
+        {
+            // Given 
+            var code =
+                @"\\chapter{Introduction}\n\\section{Signals, Systems and Signal Processing}\n\\begin{enumerate}\n\t\\item What is the definition of a signal? - Any physical quantity that varies with time, space or any other independent variable or variables\n\t\\item What does the variable $t$ represent? - Time\n\t\\item What variable represents time? - $t$\n\t\\item What is signal generation usually associated with? - A system that responds to a stimulus or force\n\t\\item What is an alternate definition of system that does not have to do with stimulus or force? - A system can be a physical device that preforms an operation on a signal \n\t\\item What are analog signals? - Functions of a continuous variable such as time\n\\end{enumerate}\n";
+
+            // When 
+            var result = SUT.ParseCode(new StringBuilder(code)) as Chapter;
+
+            // Then
+            Assert.AreEqual("Introduction", result.Name);
         }
 
         #endregion Parse Code

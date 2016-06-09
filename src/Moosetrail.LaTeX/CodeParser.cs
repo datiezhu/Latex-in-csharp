@@ -92,7 +92,7 @@ namespace Moosetrail.LaTeX
                 return;
 
             var parser = getParserForCode(code);
-
+            
             if (codeCantBeProcessed(code, parser))
                 throw new ArgumentException("The code couldnt be parsed: " + code);
 
@@ -105,8 +105,9 @@ namespace Moosetrail.LaTeX
 
         private LaTeXElementParser getParserForCode(StringBuilder code)
         {
+            var c = code.ToString();
             var parser =
-                _laTeXElements.SingleOrDefault(x => x.Key.Any(pattern => Regex.IsMatch(code.ToString(), "^" + pattern))).Value;
+                _laTeXElements.SingleOrDefault(x => x.Key.Any(pattern => Regex.IsMatch(c, "^" + pattern))).Value;
             return parser;
         }
 

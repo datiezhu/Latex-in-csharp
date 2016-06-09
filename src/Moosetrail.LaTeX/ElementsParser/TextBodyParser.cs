@@ -25,7 +25,10 @@ namespace Moosetrail.LaTeX.ElementsParser
         {
             @"\\emph{",
             @"\\\(",
-            @"\\\["
+            @"\\\[",
+            @"\\\\emph{",
+            @"\\\\\(",
+            @"\\\\\["
         };
 
         /// <summary>

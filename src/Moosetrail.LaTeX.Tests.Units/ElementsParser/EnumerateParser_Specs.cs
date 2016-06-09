@@ -38,6 +38,12 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             CollectionAssert.Contains(((LaTexElementParser<Enumerate>)SUT).CodeIndicators, @"\\begin{enumerate}");
         }
 
+        [Test]
+        public void codeIndicators_should_contain_begin_enumerate_handled()
+        {
+            CollectionAssert.Contains(((LaTexElementParser<Enumerate>)SUT).CodeIndicators, @"\\\\begin{enumerate}");
+        }
+
         #endregion CodeIndicators
 
         #region GetEmptyElement
