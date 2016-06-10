@@ -86,18 +86,23 @@ namespace Moosetrail.LaTeX.ElementsParser
         private static Enumerate createNewEnumerate(StringBuilder code)
         {
             var enumerate = new Enumerate();
+            removeUntilFirstClose(code);
+
+            return enumerate;
+        }
+
+        private static void removeUntilFirstClose(StringBuilder code)
+        {
             while (code[0] != '}')
             {
                 code.Remove(0, 1);
             }
             code.Remove(0, 1);
-
-            return enumerate;
         }
 
         private static Enumerate endEnumerate(StringBuilder code)
         {
-            code.Remove(0, EndCommandLength);
+            removeUntilFirstClose(code);
             return null;
         }
 

@@ -101,9 +101,6 @@ namespace Moosetrail.LaTeX.ElementsParser
             };
         }
 
-
-      
-
         private static string getStartTextPoint(StringBuilder code)
         {
             var textMach = Regex.Match(code.ToString(), @"^\\emph\{(.*?)\}");
@@ -181,7 +178,13 @@ namespace Moosetrail.LaTeX.ElementsParser
             var nextPart = getNextTextPart(code);
             if (!string.IsNullOrWhiteSpace(nextPart))
                 str.AppendFormat(@"\{0}", nextPart);
-            else if (string.IsNullOrEmpty(nextPart))
+            else if (string.IsNullOrEmpty(nextPart) && !(code[0] == '\\' && code[1] == ' '))
+            {
+                str.Append(@"\");
+                nextPart = getNextTextPart(code);
+                str.AppendFormat(@"{0}", nextPart);
+            }
+            else if (string.IsNullOrEmpty(nextPart) && code[0] == '\\' && code[1] == ' ')
             {
                 str.Append(@"\\");
                 nextPart = getNextTextPart(code);
