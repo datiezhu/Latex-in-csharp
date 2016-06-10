@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Moosetrail.LaTeX.Elements;
 using NUnit.Framework;
 
@@ -357,6 +356,22 @@ namespace Moosetrail.LaTeX.Tests.Units
             // When
             var chapter = result.ElementAt(0) as Chapter; 
             Assert.NotNull(chapter);
+        }
+
+        [Test]
+        public void parseContent_should_parse_item_with_slash_math_as_expected()
+        {
+            // Given 
+            var code =
+                @"\\item What is the official definition of an analog signal? - A signal that is defined for every value of time and take on values in the continuous interval $(a, b)$ where $a$ can be $-\\infty$ and $b$ can be $\\infty$";
+
+            // Then 
+            var result = LatexParser.ParseCode(code);
+
+            // When
+            var item = result.ElementAt(0) as Item;
+            Assert.NotNull(item);
+            Assert.AreEqual("\\item What is the official definition of an analog signal? - A signal that is defined for every value of time and take on values in the continuous interval $(a, b)$ where $a$ can be $-\\infty$ and $b$ can be $\\infty$\n ", item.ToString());
         }
 
         #region TestHelpers

@@ -211,6 +211,20 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
+        public void parseCode_should_update_code_for_end_command_for_double()
+        {
+            // Given 
+            var code = new StringBuilder(@"\\end{enumerate}" +
+                                @"\begin{enumerate} \item Item 3 \item Item 4 \end{enumerate}");
+
+            // When 
+            SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@"\begin{enumerate} \item Item 3 \item Item 4 \end{enumerate}", code.ToString());
+        }
+
+        [Test]
         public void parseCode_should_throw_if_string_doesnt_start_with_codeIndicator()
         {
             // Given
