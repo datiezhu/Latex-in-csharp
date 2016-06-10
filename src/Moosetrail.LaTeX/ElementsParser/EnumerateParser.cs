@@ -12,17 +12,20 @@ namespace Moosetrail.LaTeX.ElementsParser
     /// </summary>
     public class EnumerateParser : LaTeXElementParser, LaTexElementParser<Enumerate>
     {
-        private const string BeginCommand = @"\\begin{enumerate}";
-        private static readonly int BeginCommandLength = BeginCommand.Length - 1;
         private static readonly int EndCommandLength = @"\end{enumerate}".Length;
+
+        private static readonly IEnumerable<string> BeginCommands = new List<string>
+        {
+             @"\\begin{enumerate}",
+            "\\\\begin{enumerate}",
+            @"\\\\begin{enumerate}",
+        };
 
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
         /// </summary>
-        public static IEnumerable<string> CodeIndicators = new List<string>
+        public static IEnumerable<string> CodeIndicators = new List<string>(BeginCommands)
         {
-            BeginCommand,
-            @"\\\\begin{enumerate}",
             @"\\end{enumerate}",
             @"\\\\end{enumerate}"
         };
@@ -73,7 +76,7 @@ namespace Moosetrail.LaTeX.ElementsParser
             if (!Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(CodeIndicators)))
                 throw new ArgumentException("The code didn't start with an allowed indicator");
 
-            if (Regex.IsMatch(code.ToString(), "^" + BeginCommand))
+            if (Regex.IsMatch(code.ToString(), CodeParser.CreateCodeStartPattern(BeginCommands)))
                 return createNewEnumerate(code);
             else
                 return endEnumerate(code);
@@ -83,7 +86,11 @@ namespace Moosetrail.LaTeX.ElementsParser
         private static Enumerate createNewEnumerate(StringBuilder code)
         {
             var enumerate = new Enumerate();
-            code.Remove(0, BeginCommandLength);
+            while (code[0] != '}')
+            {
+                code.Remove(0, 1);
+            }
+            code.Remove(0, 1);
 
             return enumerate;
         }

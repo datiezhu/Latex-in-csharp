@@ -70,7 +70,8 @@ namespace Moosetrail.LaTeX.ElementsParser
                 throw new ArgumentException("The code didn't start with an allowed indicator");
 
             var item = new Item();
-            code.Remove(0, 5);
+            var match = CodeIndicators.SingleOrDefault(x => code.ToString().StartsWith(x));
+            code.Remove(0, match?.Length ?? 5);
 
             return item;
         }

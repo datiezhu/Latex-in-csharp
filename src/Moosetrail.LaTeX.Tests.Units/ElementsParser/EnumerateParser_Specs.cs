@@ -116,6 +116,20 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
+        public void parseCode_should_return_empty_enumerate_with_double_start()
+        {
+            // Given 
+            const string code = @"\\begin{enumerate} \\item Item 1 \\item Item 2 \\end{enumerate}" +
+                                @"\begin{enumerate} \item Item 3 \item Item 4 \end{enumerate}";
+
+            // When 
+            var enumerate = SUT.ParseCode(new StringBuilder(code)) as Enumerate;
+
+            // Then
+            Assert.IsEmpty(enumerate.ItemList);
+        }
+
+        [Test]
         public void parseCode_should_return_null_if_end_code()
         {
             // Given 
@@ -147,6 +161,32 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
             // Then
             Assert.AreEqual(@" \item Item 1 \item Item 2 \end{enumerate}" +
+                            @"\section{Section 1}" +
+                            @"This is some text " +
+                            @"\chapter{Chapter 2}" +
+                            @"\section{Section 2}" +
+                            @"This is some other text" +
+                            @"\end{document}", code.ToString());
+
+        }
+        [Test]
+        public void parseCode_should_update_code_double()
+        {
+            // Given 
+
+            var code = new StringBuilder(@"\\begin{enumerate} \\item Item 1 \\item Item 2 \\end{enumerate}" +
+                @"\section{Section 1}" +
+                       @"This is some text " +
+                       @"\chapter{Chapter 2}" +
+                       @"\section{Section 2}" +
+                       @"This is some other text" +
+                       @"\end{document}");
+
+            // When 
+            SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(@" \\item Item 1 \\item Item 2 \\end{enumerate}" +
                             @"\section{Section 1}" +
                             @"This is some text " +
                             @"\chapter{Chapter 2}" +

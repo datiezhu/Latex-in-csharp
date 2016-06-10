@@ -17,8 +17,14 @@ namespace Moosetrail.LaTeX
             "\t",
         };
 
-        public static List<string> DoubleFormat = new List<string>
+        public static List<string> Formaters = new List<string>
         {
+            "\n",
+            "\r",
+            "\t",
+            @"\n",
+            @"\r",
+            @"\t",
             @"\\n",
             @"\\t",
             @"\\r"
@@ -34,14 +40,10 @@ namespace Moosetrail.LaTeX
         {
             var s = str.ToString();
 
-            while (DoubleFormat.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
+            while (Formaters.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
             {
-                str.Remove(0, str.ToString().StartsWith(" ") ? 1 : 2);
-            }
-
-            while (SingleFormat.Any(x => str.ToString().StartsWith(x)) || str.ToString().StartsWith(" "))
-            {
-                str.Remove(0, 1);
+                var match = Formaters.SingleOrDefault(x => str.ToString().StartsWith(x));
+                str.Remove(0, match?.Length ?? 1);
             }
 
             return str;
