@@ -142,6 +142,31 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
+        public void parseCode_should_return_remaining_code_when_double_code()
+        {
+            // Given 
+            var code =
+               new StringBuilder(@"\\item My item" +
+                       @"\item My other item" +
+                @"\chapter{Chapter 2}" +
+                @"\section{Section 2}" +
+                @"This is some other text" +
+                @"\end{document}");
+
+            // When 
+            SUT.ParseCode(code);
+
+            // Then
+            Assert.AreEqual(
+                " My item" +
+                  @"\item My other item" +
+                @"\chapter{Chapter 2}" +
+                @"\section{Section 2}" +
+                @"This is some other text" +
+                @"\end{document}", code.ToString());
+        }
+
+        [Test]
         public void parseCode_should_throw_if_string_doesnt_start_with_codeIndicator()
         {
             // Given
