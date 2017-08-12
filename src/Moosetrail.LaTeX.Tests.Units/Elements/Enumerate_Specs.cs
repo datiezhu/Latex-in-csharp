@@ -102,7 +102,7 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
 
         #region TestHelpers
 
-        readonly List<string> _noneAddItems = new List<string>
+        private static readonly List<string> _noneAddItems = new List<string>
         {
             "\n",
             "\t",

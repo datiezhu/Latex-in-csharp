@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Moosetrail.LaTeX.Elements;
 using NUnit.Framework;
 
@@ -189,8 +190,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void prase_should_document_with_only_lists()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListDocument.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/ListDocument.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);
@@ -213,8 +213,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void prase_should_document_with_list_sublit_and_emph()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSublistAndEmph.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/ListWithSublistAndEmph.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);
@@ -238,8 +237,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void praseStructuredDocument_should_find_chapters()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/ListWithSubsections.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);
@@ -253,8 +251,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void praseStructuredDocument_should_find_sections_in_chapter()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/ListWithSubsections.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);
@@ -271,8 +268,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void praseStructuredDocument_should_find_subsections_in_section()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/ListWithSubsections.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/ListWithSubsections.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);
@@ -328,8 +324,7 @@ namespace Moosetrail.LaTeX.Tests.Units
         public void praseTextWithMthCommands_should_parse_correcty()
         {
             // Given 
-            var uri = new Uri(new Uri(Environment.CurrentDirectory), "../../TestData/MathWithInlineCommands.tex");
-            var code = File.ReadAllText(uri.AbsolutePath);
+            var code = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"TestData/MathWithInlineCommands.tex"));
 
             // When 
             var result = LatexParser.ParseCode(code);

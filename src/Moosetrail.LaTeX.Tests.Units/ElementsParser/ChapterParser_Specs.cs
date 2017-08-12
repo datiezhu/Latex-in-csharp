@@ -173,7 +173,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         #region TestHelpers
 
-        readonly List<LaTeXElement> _higherHierarchyElements = new List<LaTeXElement>
+        private static readonly List<LaTeXElement> _higherHierarchyElements = new List<LaTeXElement>
         {
             new DocumentClass(),
             new Document(),
