@@ -31,8 +31,8 @@ namespace Moosetrail.LaTeX
                     new DocumentParser()
                 },
                 {
-                    ChapterParser.CodeIndicators,
-                    new ChapterParser()
+                    FormatterParser.CodeIndicators,
+                    new FormatterParser()
                 },
                 {
                     SectionParser.CodeIndicators,

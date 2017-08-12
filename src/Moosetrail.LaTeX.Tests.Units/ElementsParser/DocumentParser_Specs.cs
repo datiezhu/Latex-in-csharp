@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Moosetrail.LaTeX.Elements;
 using Moosetrail.LaTeX.ElementsParser;
@@ -40,7 +41,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var doc = SUT.ParseCode(new StringBuilder(BasicDocument)) as Document;
 
             // Then
-            Assert.AreEqual("John Doe", doc.Author);
+            Assert.IsInstanceOf<Formatter>(doc.Elements[0]);
+            Assert.IsInstanceOf<TextBody>(((Formatter)doc.Elements[0]).InnerElements.ElementAt(0));
+            Assert.AreEqual("John Doe", ((TextBody)((Formatter)doc.Elements[0]).InnerElements.ElementAt(0)).TheText);
         }
         [Test]
         public void parseCode_should_leavel_author_empty_with_no_author()

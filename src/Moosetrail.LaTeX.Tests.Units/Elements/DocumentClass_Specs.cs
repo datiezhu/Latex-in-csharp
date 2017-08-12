@@ -40,7 +40,5 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         }
 
         #endregion EmptyContrcutor
-
-        
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Moosetrail.LaTeX.Elements;
+﻿using Moosetrail.LaTeX.Elements;
 using NUnit.Framework;
 
 namespace Moosetrail.LaTeX.Tests.Units.Elements
@@ -40,7 +39,5 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         }
 
         #endregion Empty Constructor
-
-       
     }
 }

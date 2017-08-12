@@ -2,50 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Moosetrail.LaTeX.Elements;
-using Moosetrail.LaTeX.ElementsParser;
+using Moosetrail.LaTeX.Exceptions;
 using NUnit.Framework;
 
 namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 {
     [TestFixture]
-    public class ChapterParser_Specs
+    public class ChapterParser_Specs : FormatterParser_Specs
     {
-        private ChapterParser SUT;
-
-        [SetUp]
-        public void Setup()
-        {
-            SUT = new ChapterParser();
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            SUT = null;
-        }
-
-        [Test]
-        public void should_be_LaTeXElementParser()
-        {
-            Assert.IsInstanceOf<LaTeXElementParser>(SUT);
-        }
-
-        #region CodeIndicators
-
-        [Test]
-        public void codeIndicators_should_contain_begin_document()
-        {
-            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\chapter");
-        }
-
-        [Test]
-        public void codeIndicators_should_contain_chapter_handled()
-        {
-            CollectionAssert.Contains(((LaTeXElementParser)SUT).CodeIndicators, @"\\\\chapter");
-        }
-
-        #endregion CodeIndicators
-
         #region SetChildElement
 
         [Test]
@@ -54,14 +18,14 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Given 
             var text1 = new TextBody();
             var section = new Section();
-            var chpter = new Chapter();
+            var chapter = new Formatter(FormatterCommand.chapter);
 
             // When 
-            SUT.SetChildElement(chpter, section, text1);
+            SUT.SetChildElement(chapter, section, text1);
 
             // Then
-            Assert.AreSame(section, chpter.Elements[0]);
-            Assert.AreSame(text1, chpter.Elements[1]);
+            Assert.AreSame(section, chapter.InnerElements[0]);
+            Assert.AreSame(text1, chapter.InnerElements[1]);
         }
 
         [Test]
@@ -71,29 +35,8 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             // Given 
 
             // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new Chapter(),element));
+            var ex = Assert.Throws<LaTeXException>(() => SUT.SetChildElement(new Formatter(FormatterCommand.chapter) ,element));
             Assert.AreEqual("A Chapter can't have a DocumentClass, Document or Chapter as a child", ex.Message);
-        }
-
-        [Test]
-        public void setChildElement_should_throw_if_there_is_no_children_set()
-        {
-            // Given
-            var chapter = new Chapter();
-
-            // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(chapter));
-            Assert.AreEqual("No child elements supplied to set as child", ex.Message);
-        }
-
-        [Test]
-        public void setChildElement_should_throw_if_suplied_element_isnt_a_chapter()
-        {
-            // Given
-
-            // Then
-            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new TextBody()));
-            Assert.AreEqual("The supplied element wasn't a Chapter, only Chapter is allowed", ex.Message);
         }
 
         #endregion SetChildElement
@@ -104,7 +47,6 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         public void parseCode_should_set_name()
         {
             // Given 
-           
             var code = @"\chapter{Chapter 1}" +
                        @"\section{Section 1}" +
                        @"This is some text " +
@@ -114,10 +56,11 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
                        @"\end{document}";
 
             // When 
-            var chapter = SUT.ParseCode(new StringBuilder(code)) as Chapter;
+            var chapter = SUT.ParseCode(new StringBuilder(code));
 
             // Then
-            Assert.AreEqual("Chapter 1", chapter.Name);
+            Assert.IsInstanceOf<TextBody>(chapter.InnerElements[0]);
+            Assert.AreEqual("Chapter 1", ((TextBody)chapter.InnerElements[0]).TheText);
         }
 
         [Test]
@@ -163,10 +106,10 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
                 "\\chapter{Introduction}\n\\section{Signals, Systems and Signal Processing}\n\\begin{enumerate}\n\t\\item What is the definition of a signal? - Any physical quantity that varies with time, space or any other independent variable or variables\n\t\\item What does the variable $t$ represent? - Time\n\t\\item What variable represents time? - $t$\n\t\\item What is signal generation usually associated with? - A system that responds to a stimulus or force\n\t\\item What is an alternate definition of system that does not have to do with stimulus or force? - A system can be a physical device that preforms an operation on a signal \n\t\\item What are analog signals? - Functions of a continuous variable such as time\n\\end{enumerate}\n";
 
             // When 
-            var result = SUT.ParseCode(new StringBuilder(code)) as Chapter;
+            var result = SUT.ParseCode(new StringBuilder(code));
 
             // Then
-            Assert.AreEqual("Introduction", result.Name);
+            Assert.AreEqual("Introduction", ((TextBody)result.InnerElements[0]).TheText);
         }
 
         #endregion Parse Code
@@ -177,7 +120,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         {
             new DocumentClass(),
             new Document(),
-            new Chapter()
+            new Formatter(FormatterCommand.chapter)
         };
 
         #endregion TestHelpers

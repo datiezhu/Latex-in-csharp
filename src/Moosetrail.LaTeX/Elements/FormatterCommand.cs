@@ -2,6 +2,12 @@
 {
     public enum FormatterCommand
     {
+        title,
+        author,
+        chapter,
+        section,
+        subsection,
+        subsubsection,
         texttt
     }
 }

@@ -8,9 +8,9 @@ using NUnit.Framework;
 namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 {
     [TestFixture]
-    public class FormattParser_Specs
+    public class FormatterParser_Specs
     {
-        private FormatterParser SUT;
+        protected FormatterParser SUT;
 
         [SetUp]
         public void Setup()
@@ -41,21 +41,21 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [TestCaseSource(nameof(allCommands))]
         public void codeIndicators_should_contain_begin_document(FormatterCommand command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, @"\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, @"\\" + command);
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
         public void codeIndicators_should_contain_begin_enumerate_handled(FormatterCommand command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, @"\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, @"\\\\" + command);
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
         public void codeIndicators_should_contain_begin_enumerate_handled_without_begin_escaped(FormatterCommand command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, "\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Formatter>)SUT).CodeIndicators, "\\\\" + command);
         }
 
         #endregion CodeIndicators
@@ -73,7 +73,26 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         #region SetChiildElement
 
-        
+        [Test]
+        public void setChildElement_should_throw_if_there_is_no_children_set()
+        {
+            // Given
+            var chapter = new Formatter(FormatterCommand.chapter);
+
+            // Then
+            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(chapter));
+            Assert.AreEqual("No child elements supplied to set as child", ex.Message);
+        }
+
+        [Test]
+        public void setChildElement_should_throw_if_suplied_element_isnt_a_formatter()
+        {
+            // Given
+
+            // Then
+            var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new TextBody()));
+            Assert.AreEqual("The supplied element wasn't a Formatter, only Formatter is allowed", ex.Message);
+        }
 
         #endregion SetChiildElement
 
