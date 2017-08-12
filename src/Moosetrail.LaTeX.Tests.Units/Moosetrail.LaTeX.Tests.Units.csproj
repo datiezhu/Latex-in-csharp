@@ -60,6 +60,8 @@
     <Compile Include="CodeGenerator\ItemCodeGenerator_Specs.cs" />
     <Compile Include="CodeGenerator\TextBodyCodeGenerator_Specs.cs" />
     <Compile Include="ElementsParser\EnumerateParser_Specs.cs" />
+    <Compile Include="ElementsParser\InlineParser_Specs.cs" />
+    <Compile Include="ElementsParser\FormattParser_Specs.cs" />
     <Compile Include="ElementsParser\EnvelopeParser_Specs.cs" />
     <Compile Include="ElementsParser\ItemParser_Specs.cs" />
     <Compile Include="ElementsParser\SubsubsectionParser_Specs.cs" />
@@ -74,6 +76,8 @@
     <Compile Include="Elements\DocumentClass_Specs.cs" />
     <Compile Include="Elements\Document_Specs.cs" />
     <Compile Include="Elements\Enumerate_Specs.cs" />
+    <Compile Include="Elements\Inline_Specs.cs" />
+    <Compile Include="Elements\Formatter_Specs.cs" />
     <Compile Include="Elements\Envelope_Specs.cs" />
     <Compile Include="Elements\Item_Specs.cs" />
     <Compile Include="Elements\Subsubsection_Specs.cs" />
