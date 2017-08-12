@@ -48,6 +48,7 @@
     <Compile Include="CodeGenerator\TextBodyCodeGenerator.cs" />
     <Compile Include="CodeParser.cs" />
     <Compile Include="ElementsParser\EnumerateParser.cs" />
+    <Compile Include="ElementsParser\EnvelopeParser.cs" />
     <Compile Include="ElementsParser\ItemParser.cs" />
     <Compile Include="ElementsParser\LaTexElementParser.cs" />
     <Compile Include="ElementsParser\SubsubsectionParser.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Elements\Subsection.cs" />
     <Compile Include="Elements\Section.cs" />
     <Compile Include="Elements\TextBody.cs" />
+    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="LaTeXElement.cs" />
     <Compile Include="LaTeXElementElementParserPair.cs" />
     <Compile Include="LaTeXElementParser.cs" />
