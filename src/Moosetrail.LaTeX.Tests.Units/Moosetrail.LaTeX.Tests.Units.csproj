@@ -73,6 +73,7 @@
     <Compile Include="Elements\DocumentClass_Specs.cs" />
     <Compile Include="Elements\Document_Specs.cs" />
     <Compile Include="Elements\Enumerate_Specs.cs" />
+    <Compile Include="Elements\Envelope_Specs.cs" />
     <Compile Include="Elements\Item_Specs.cs" />
     <Compile Include="Elements\Subsubsection_Specs.cs" />
     <Compile Include="Elements\Subsection_Specs.cs" />
@@ -83,9 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="TestData\ListDocument.aux">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="TestData\ListDocument.tex">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

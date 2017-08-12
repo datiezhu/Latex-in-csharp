@@ -8,7 +8,6 @@ namespace Moosetrail.LaTeX.Elements
     /// </summary>
     public class Item : LaTeXElement
     {
-       
         /// <summary>
         /// Creates a new instance of the Item class
         /// </summary>

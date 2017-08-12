@@ -64,6 +64,8 @@
     <Compile Include="Elements\DocumentClass.cs" />
     <Compile Include="Elements\DocumentOrganisation.cs" />
     <Compile Include="Elements\Enumerate.cs" />
+    <Compile Include="Elements\Envelope.cs" />
+    <Compile Include="Elements\EnvelopeCommand.cs" />
     <Compile Include="Elements\Item.cs" />
     <Compile Include="Elements\Subsubsection.cs" />
     <Compile Include="Elements\Subsection.cs" />
