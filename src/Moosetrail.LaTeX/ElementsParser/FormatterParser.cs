@@ -107,6 +107,9 @@ namespace Moosetrail.LaTeX.ElementsParser
             switch (match.Groups[1].Value)
             {
                 case "chapter": return FormatterCommand.chapter;
+                case "section": return FormatterCommand.section;
+                case "subsection": return FormatterCommand.subsection;
+                case "subsubsection": return FormatterCommand.subsubsection;
                 default:
                     throw new NotSupportedException();
             }

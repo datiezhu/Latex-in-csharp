@@ -35,18 +35,6 @@ namespace Moosetrail.LaTeX
                     new FormatterParser()
                 },
                 {
-                    SectionParser.CodeIndicators,
-                    new SectionParser()
-                },
-                {
-                    SubsectionParser.CodeIndicators,
-                    new SubsectionParser()
-                },
-                {
-                    SubsubsectionParser.CodeIndicators,
-                    new SubsubsectionParser()
-                },
-                {
                     EnumerateParser.CodeIndicators,
                     new EnumerateParser()
                 },

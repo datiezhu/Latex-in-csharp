@@ -56,7 +56,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var doc = SUT.ParseCode(code) as Document;
 
             // Then
-            Assert.IsEmpty(doc.Author);
+            Assert.False(doc.Elements.Any(x => x is Formatter && ((Formatter)x).Type == FormatterCommand.author));
         }
         [Test]
         public void parseCode_should_set_title()
@@ -67,7 +67,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var doc = SUT.ParseCode(new StringBuilder(BasicDocument)) as Document;
 
             // Then
-            Assert.AreEqual("My title", doc.Title);
+            Assert.IsInstanceOf<Formatter>(doc.Elements[1]);
+            Assert.IsInstanceOf<TextBody>(((Formatter)doc.Elements[0]).InnerElements.ElementAt(1));
+            Assert.AreEqual("My title", ((TextBody)((Formatter)doc.Elements[1]).InnerElements.ElementAt(0)).TheText);
         }
         [Test]
         public void parseCode_should_leavel_title_empty_with_no_title()
@@ -80,7 +82,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var doc = SUT.ParseCode(code) as Document;
 
             // Then
-            Assert.IsEmpty(doc.Title);
+            Assert.False(doc.Elements.Any(x => x is Formatter && ((Formatter)x).Type == FormatterCommand.title));
         }
         [Test]
         public void parseCode_should_set_makeTitle()

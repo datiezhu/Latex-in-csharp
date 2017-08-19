@@ -9,8 +9,16 @@ namespace Moosetrail.LaTeX.ElementRules
         {
             switch (forCommand)
             {
-                case FormatterCommand.chapter: return new ChapterRules();
-                default: throw new NotSupportedException();
+                case FormatterCommand.chapter:
+                    return new ChapterRules();
+                case FormatterCommand.section:
+                    return new SectionRules();
+                case FormatterCommand.subsection:
+                    return new SubsectionRules();
+                case FormatterCommand.subsubsection:
+                    return new SubsubsectionRules();
+                default:
+                    throw new NotSupportedException();
             }
         }
     }
