@@ -8,14 +8,14 @@ using NUnit.Framework;
 namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 {
     [TestFixture]
-    public class InlineParser_Specs
+    public class CommandParser_Specs
     {
-        private InlineParser SUT;
+        private CommandParser SUT;
 
         [SetUp]
         public void Setup()
         {
-            SUT = new InlineParser();
+            SUT = new CommandParser();
         }
 
         [TearDown]
@@ -27,7 +27,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void should_be_LaTeXElementParser_for_Element()
         {
-            Assert.IsInstanceOf<LaTexElementParser<Inline>>(SUT);
+            Assert.IsInstanceOf<LaTexElementParser<Command>>(SUT);
         }
         [Test]
         public void should_be_LaTeXElementParser()
@@ -39,23 +39,23 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_document(InlineCommand command)
+        public void codeIndicators_should_contain_begin_document(CommandType commandType)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Inline>)SUT).CodeIndicators, @"\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Command>)SUT).CodeIndicators, @"\\begin{" + commandType + "}");
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_enumerate_handled(InlineCommand command)
+        public void codeIndicators_should_contain_begin_enumerate_handled(CommandType commandType)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Inline>)SUT).CodeIndicators, @"\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Command>)SUT).CodeIndicators, @"\\\\begin{" + commandType + "}");
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_enumerate_handled_without_begin_escaped(InlineCommand command)
+        public void codeIndicators_should_contain_begin_enumerate_handled_without_begin_escaped(CommandType commandType)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Inline>)SUT).CodeIndicators, "\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Command>)SUT).CodeIndicators, "\\\\begin{" + commandType + "}");
         }
 
         #endregion CodeIndicators
@@ -83,9 +83,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         #region TestHelpers
 
-        private static IEnumerable<InlineCommand> allCommands()
+        private static IEnumerable<CommandType> allCommands()
         {
-            return EnumUtil.GetValues<InlineCommand>();
+            return EnumUtil.GetValues<CommandType>();
         }
 
         #endregion TestHelpers
