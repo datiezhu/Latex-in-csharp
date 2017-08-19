@@ -59,6 +59,7 @@
     <Compile Include="CodeGenerator\EnumerateCodeGenerator_Specs.cs" />
     <Compile Include="CodeGenerator\ItemCodeGenerator_Specs.cs" />
     <Compile Include="CodeGenerator\TextBodyCodeGenerator_Specs.cs" />
+    <Compile Include="CommandRules\DocumentclassRules_Specs.cs" />
     <Compile Include="ElementsParser\EnumerateParser_Specs.cs" />
     <Compile Include="ElementsParser\CommandParser_Specs.cs" />
     <Compile Include="ElementsParser\FormatterParser_Specs.cs" />

@@ -115,5 +115,10 @@ namespace Moosetrail.LaTeX.ElementsParser
         {
             return ParseCode(code);
         }
+
+        public Tuple<Item, string> ParseCode(string code)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

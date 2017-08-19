@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Moosetrail.LaTeX.Arguments;
 
 namespace Moosetrail.LaTeX.Elements
 {
@@ -11,10 +12,12 @@ namespace Moosetrail.LaTeX.Elements
         /// Creates a new instance of the Command class
         /// </summary>
         /// <param name="type">The type of the inline code block</param>
-        public Command(CommandType type)
+        public Command(CommandType type, IEnumerable<string> requriredArguments = null, IEnumerable<string> optionalArguments = null)
         {
             Type = type;
             InnerElements = new List<LaTeXElement>();
+            RequriredArguments = requriredArguments;
+            OptionalArguments = optionalArguments;
         }
 
         /// <summary>
@@ -25,10 +28,10 @@ namespace Moosetrail.LaTeX.Elements
         /// <summary>
         /// Get/Set the elements of the inline
         /// </summary>
-        public List<LaTeXElement> InnerElements { get; set; }
+        public List<LaTeXElement> InnerElements { get; private set; }
 
-        public List<string> RequriredArguments { get; set; }
+        public IEnumerable<string> RequriredArguments { get; private set; }
 
-        public List<string> OptionalArguments { get; set; }
+        public IEnumerable<string> OptionalArguments { get; private set; }
     }
 }

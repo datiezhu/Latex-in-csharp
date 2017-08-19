@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arguments\Argument.cs" />
+    <Compile Include="Arguments\PatternArgument.cs" />
+    <Compile Include="Arguments\StandardArgument.cs" />
     <Compile Include="CodeGenerator\CodeGenerator.cs" />
     <Compile Include="CodeGenerator\CodeGeneratorFactory.cs" />
     <Compile Include="CodeGenerator\EnumerateCodeGenerator.cs" />
     <Compile Include="CodeGenerator\ItemCodeGenerator.cs" />
     <Compile Include="CodeGenerator\TextBodyCodeGenerator.cs" />
     <Compile Include="CodeParser.cs" />
+    <Compile Include="CommandRules\CommandRules.cs" />
+    <Compile Include="CommandRules\DocumentclassRules.cs" />
     <Compile Include="ElementRules\ChapterRules.cs" />
     <Compile Include="ElementRules\ElementsRulesFactory.cs" />
     <Compile Include="ElementRules\Rules.cs" />
@@ -61,6 +66,7 @@
     <Compile Include="ElementsParser\LaTexElementParser.cs" />
     <Compile Include="ElementsParser\DocumentClassParser.cs" />
     <Compile Include="ElementsParser\DocumentParser.cs" />
+    <Compile Include="ElementsParser\RawCommand.cs" />
     <Compile Include="ElementsParser\TextBodyParser.cs" />
     <Compile Include="Elements\Chapter.cs" />
     <Compile Include="Elements\ContentContext.cs" />
@@ -80,7 +86,9 @@
     <Compile Include="Elements\Subsection.cs" />
     <Compile Include="Elements\Section.cs" />
     <Compile Include="Elements\TextBody.cs" />
+    <Compile Include="Exceptions\InvalidLatexCodeException.cs" />
     <Compile Include="Exceptions\LaTeXException.cs" />
+    <Compile Include="Exceptions\LaTeXParseCommandException.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="LaTeXElement.cs" />
     <Compile Include="LaTeXElementElementParserPair.cs" />

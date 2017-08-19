@@ -276,5 +276,9 @@ namespace Moosetrail.LaTeX.ElementsParser
             };
         }
 
+        public Tuple<TextBody, string> ParseCode(string code)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

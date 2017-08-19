@@ -36,5 +36,16 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// </returns>
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
         TElement ParseCode(StringBuilder code);
+
+        /// <summary>
+        /// Parses the code given the object and sets the data to the object 
+        /// from the front of the string. Returns the created object and the code after the element was ended
+        /// </summary>
+        /// <param name="code">The code to parse and handle</param>
+        /// <returns>
+        /// A Tuple with the newly parsed object. The second object is a string with the parsed code removed from the code given as an argument to the function
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
+        Tuple<TElement, string> ParseCode(string code);
     }
 }
