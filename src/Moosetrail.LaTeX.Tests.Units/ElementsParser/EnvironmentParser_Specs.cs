@@ -6,18 +6,19 @@ using Moosetrail.LaTeX.Elements;
 using Moosetrail.LaTeX.ElementsParser;
 using Moosetrail.LaTeX.Helpers;
 using NUnit.Framework;
+using Environment = Moosetrail.LaTeX.Elements.Environment;
 
 namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 {
     [TestFixture]
-    public class EnvelopeParser_Specs
+    public class EnvironmentParser_Specs
     {
-        protected EnvelopeParser SUT;
+        protected EnvironmentParser SUT;
 
         [SetUp]
         public void Setup()
         {
-            SUT = new EnvelopeParser();
+            SUT = new EnvironmentParser();
         }
 
         [TearDown]
@@ -29,7 +30,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         [Test]
         public void should_be_LaTeXElementParser_for_Element()
         {
-            Assert.IsInstanceOf<LaTexElementParser<Envelope>>(SUT);
+            Assert.IsInstanceOf<LaTexElementParser<Environment>>(SUT);
         }
         [Test]
         public void should_be_LaTeXElementParser()
@@ -41,23 +42,23 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_document(EnvelopeCommand command)
+        public void codeIndicators_should_contain_begin_environment(EnvironmentType command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Envelope>)SUT).CodeIndicators, @"\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Environment>)SUT).CodeIndicators, @"\\begin{" + command + "}");
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_enumerate_handled(EnvelopeCommand command)
+        public void codeIndicators_should_contain_begin_environment_handled(EnvironmentType command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Envelope>)SUT).CodeIndicators, @"\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Environment>)SUT).CodeIndicators, @"\\\\begin{" + command + "}");
         }
 
         [Test]
         [TestCaseSource(nameof(allCommands))]
-        public void codeIndicators_should_contain_begin_enumerate_handled_without_begin_escaped(EnvelopeCommand command)
+        public void codeIndicators_should_contain_begin_environment_handled_without_begin_escaped(EnvironmentType command)
         {
-            CollectionAssert.Contains(((LaTexElementParser<Envelope>)SUT).CodeIndicators, "\\\\begin{" + command + "}");
+            CollectionAssert.Contains(((LaTexElementParser<Environment>)SUT).CodeIndicators, "\\\\begin{" + command + "}");
         }
 
         #endregion CodeIndicators
@@ -101,13 +102,13 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
         }
 
         [Test]
-        public void setChildElement_should_throw_if_suplied_element_isnt_a_formatter()
+        public void setChildElement_should_throw_if_suplied_element_isnt_an_environment()
         {
             // Given
 
             // Then
             var ex = Assert.Throws<ArgumentException>(() => SUT.SetChildElement(new TextBody(), new TextBody()));
-            Assert.AreEqual("The supplied element wasn't an Envelope, only Envelope is allowed", ex.Message);
+            Assert.AreEqual("The supplied element wasn't an Environment, only Environment is allowed", ex.Message);
         }
 
         #endregion SetChildElement
@@ -125,12 +126,12 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var enumerate = SUT.ParseCode(new StringBuilder(code));
 
             // Then
-            Assert.AreEqual(EnvelopeCommand.enumerate, enumerate.Type);
+            Assert.AreEqual(EnvironmentType.enumerate, enumerate.Type);
             Assert.IsEmpty(enumerate.InnerElements);
         }
 
         [Test]
-        public void parseCode_should_return_empty_enumerate_with_double_start()
+        public void parseCode_should_return_empty_environment_from_double_start()
         {
             // Given 
             const string code = @"\\begin{enumerate} \\item Item 1 \\item Item 2 \\end{enumerate}" +
@@ -140,7 +141,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var enumerate = SUT.ParseCode(new StringBuilder(code));
 
             // Then
-            Assert.AreEqual(EnvelopeCommand.enumerate, enumerate.Type);
+            Assert.AreEqual(EnvironmentType.enumerate, enumerate.Type);
             Assert.IsEmpty(enumerate.InnerElements);
         }
 
@@ -253,9 +254,9 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 
         #region TestHelpers
 
-        private static IEnumerable<EnvelopeCommand> allCommands()
+        private static IEnumerable<EnvironmentType> allCommands()
         {
-            return EnumUtil.GetValues<EnvelopeCommand>();
+            return EnumUtil.GetValues<EnvironmentType>();
         }
 
         #endregion TestHelpers

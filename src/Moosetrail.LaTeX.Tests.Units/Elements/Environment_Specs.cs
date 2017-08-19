@@ -4,14 +4,14 @@ using NUnit.Framework;
 namespace Moosetrail.LaTeX.Tests.Units.Elements
 {
     [TestFixture]
-    public class Envelope_Specs
+    public class Environment_Specs
     {
-        private Envelope SUT;
+        private Environment SUT;
 
         [SetUp]
         public void Setup()
         {
-            SUT = new Envelope(EnvelopeCommand.enumerate);
+            SUT = new Environment(EnvironmentType.enumerate);
         }
 
         [TearDown]
@@ -32,7 +32,7 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         public void constructor_should_set_elements_to_empty()
         {
             // When 
-            SUT = new Envelope(EnvelopeCommand.enumerate);
+            SUT = new Environment(EnvironmentType.enumerate);
 
             // Then
             Assert.IsEmpty(SUT.InnerElements);
@@ -42,10 +42,10 @@ namespace Moosetrail.LaTeX.Tests.Units.Elements
         public void constructor_should_set_type_to_given_type()
         {
             // When
-            SUT = new Envelope(EnvelopeCommand.enumerate);
+            SUT = new Environment(EnvironmentType.enumerate);
 
             // Then
-            Assert.AreEqual(EnvelopeCommand.enumerate, SUT.Type);
+            Assert.AreEqual(EnvironmentType.enumerate, SUT.Type);
         }
 
         #endregion Constrcutor

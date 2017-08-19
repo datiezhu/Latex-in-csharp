@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Moosetrail.LaTeX.Elements;
 using Moosetrail.LaTeX.Helpers;
+using Environment = Moosetrail.LaTeX.Elements.Environment;
 
 namespace Moosetrail.LaTeX.ElementsParser
 {
-    public class EnvelopeParser : LaTeXElementParser, LaTexElementParser<Envelope>
+    public class EnvironmentParser : LaTeXElementParser, LaTexElementParser<Environment>
     {
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
@@ -14,10 +15,10 @@ namespace Moosetrail.LaTeX.ElementsParser
         public static IEnumerable<string> CodeIndicators { get; }
         private static readonly IEnumerable<string> BeginCommands;
 
-        static EnvelopeParser()
+        static EnvironmentParser()
         {
             var beginCommands = new List<string>();
-            foreach (var command in EnumUtil.GetValues<EnvelopeCommand>())
+            foreach (var command in EnumUtil.GetValues<EnvironmentType>())
             {
                 beginCommands.Add(@"\\begin{" + command + "}");
                 beginCommands.Add("\\\\begin{" + command + "}");
@@ -27,13 +28,13 @@ namespace Moosetrail.LaTeX.ElementsParser
             CodeIndicators = new List<string>(BeginCommands);
         }
 
-        IEnumerable<string> LaTexElementParser<Envelope>.CodeIndicators => CodeIndicators;
+        IEnumerable<string> LaTexElementParser<Environment>.CodeIndicators => CodeIndicators;
 
         /// <summary>
         /// Gets an element, same as the ParseCode but without anything set, just an empty object
         /// </summary>
         /// <returns>A LatexObject</returns>
-        public Envelope GetEmptyElement()
+        public Environment GetEmptyElement()
         {
             throw new NotSupportedException();
         }
@@ -45,7 +46,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// <param name="children">The elements to set</param>
         /// <exception cref="NotSupportedException">Thrown if the element isn't supported or the element doesn't support child items</exception>
         /// <exception cref="ArgumentException">Thrown if the any element in the list isn't a supported child element</exception>
-        public void SetChildElement(Envelope element, params LaTeXElement[] children)
+        public void SetChildElement(Environment element, params LaTeXElement[] children)
         {
             element.InnerElements.AddRange(children);
         }
@@ -59,7 +60,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// The newly parsed object. The string builder will also have been updted, the code parsed is removed
         /// </returns>
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
-        public Envelope ParseCode(StringBuilder code)
+        public Environment ParseCode(StringBuilder code)
         {
             throw new System.NotImplementedException();
         }
@@ -87,11 +88,11 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// <exception cref="ArgumentException">Thrown if the any element in the list isn't a supported child element</exception>
         public void SetChildElement(LaTeXElement element, params LaTeXElement[] children)
         {
-            var envelope = element as Envelope;
+            var envelope = element as Environment;
             if (envelope != null)
                  SetChildElement(envelope, children);
             else 
-                throw new ArgumentException("The supplied element wasn't an Envelope, only Envelope is allowed");
+                throw new ArgumentException("The supplied element wasn't an Environment, only Environment is allowed");
         }
 
         /// <summary>

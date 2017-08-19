@@ -56,7 +56,7 @@
     <Compile Include="ElementsParser\EnumerateParser.cs" />
     <Compile Include="ElementsParser\FormatterParser.cs" />
     <Compile Include="ElementsParser\InlineParser.cs" />
-    <Compile Include="ElementsParser\EnvelopeParser.cs" />
+    <Compile Include="ElementsParser\EnvironmentParser.cs" />
     <Compile Include="ElementsParser\ItemParser.cs" />
     <Compile Include="ElementsParser\LaTexElementParser.cs" />
     <Compile Include="ElementsParser\DocumentClassParser.cs" />
@@ -69,8 +69,8 @@
     <Compile Include="Elements\DocumentClass.cs" />
     <Compile Include="Elements\DocumentOrganisation.cs" />
     <Compile Include="Elements\Enumerate.cs" />
-    <Compile Include="Elements\Envelope.cs" />
-    <Compile Include="Elements\EnvelopeCommand.cs" />
+    <Compile Include="Elements\Environment.cs" />
+    <Compile Include="Elements\EnvironmentType.cs" />
     <Compile Include="Elements\Formatter.cs" />
     <Compile Include="Elements\FormatterCommand.cs" />
     <Compile Include="Elements\Inline.cs" />

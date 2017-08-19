@@ -1,6 +1,6 @@
 ﻿namespace Moosetrail.LaTeX.Elements
 {
-    public enum EnvelopeCommand
+    public enum EnvironmentType
     {
         enumerate
     }

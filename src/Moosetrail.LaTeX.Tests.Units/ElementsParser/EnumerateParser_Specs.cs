@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
 {
     [TestFixture]
-    public class EnumerateParser_Specs : EnvelopeParser_Specs
+    public class EnumerateParser_Specs : EnvironmentParser_Specs
     {
         #region SetChildElement
 
@@ -35,7 +35,7 @@ namespace Moosetrail.LaTeX.Tests.Units.ElementsParser
             var enumerate = SUT.ParseCode(new StringBuilder(code));
 
             // Then
-            Assert.AreEqual(EnvelopeCommand.enumerate, enumerate.Type);
+            Assert.AreEqual(EnvironmentType.enumerate, enumerate.Type);
             Assert.IsEmpty(enumerate.InnerElements);
         }
 
