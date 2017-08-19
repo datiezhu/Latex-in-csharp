@@ -3,7 +3,7 @@ using Moosetrail.LaTeX.Arguments;
 
 namespace Moosetrail.LaTeX.CommandRules
 {
-    public interface CommandRules
+    public interface ArgumentCommandRules
     {
         int NbrOfRequriredArguments { get; }
 

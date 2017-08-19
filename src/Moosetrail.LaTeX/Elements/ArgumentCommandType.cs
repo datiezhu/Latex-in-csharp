@@ -1,8 +1,8 @@
 ﻿namespace Moosetrail.LaTeX.Elements
 {
-    public enum CommandType
+    public enum ArgumentCommandType
     {
         documentclass,
-        item
+        usepackage
     }
 }

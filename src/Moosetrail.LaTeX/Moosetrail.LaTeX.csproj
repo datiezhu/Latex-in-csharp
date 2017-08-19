@@ -50,8 +50,9 @@
     <Compile Include="CodeGenerator\ItemCodeGenerator.cs" />
     <Compile Include="CodeGenerator\TextBodyCodeGenerator.cs" />
     <Compile Include="CodeParser.cs" />
-    <Compile Include="CommandRules\CommandRules.cs" />
+    <Compile Include="CommandRules\ArgumentCommandRules.cs" />
     <Compile Include="CommandRules\DocumentclassRules.cs" />
+    <Compile Include="CommandRules\UsepackageRules.cs" />
     <Compile Include="ElementRules\ChapterRules.cs" />
     <Compile Include="ElementRules\ElementsRulesFactory.cs" />
     <Compile Include="ElementRules\Rules.cs" />
@@ -60,13 +61,13 @@
     <Compile Include="ElementRules\SubsubsectionRules.cs" />
     <Compile Include="ElementsParser\EnumerateParser.cs" />
     <Compile Include="ElementsParser\FormatterParser.cs" />
-    <Compile Include="ElementsParser\CommandParser.cs" />
+    <Compile Include="ElementsParser\ArgumentCommandParser.cs" />
     <Compile Include="ElementsParser\EnvironmentParser.cs" />
     <Compile Include="ElementsParser\ItemParser.cs" />
     <Compile Include="ElementsParser\LaTexElementParser.cs" />
     <Compile Include="ElementsParser\DocumentClassParser.cs" />
     <Compile Include="ElementsParser\DocumentParser.cs" />
-    <Compile Include="ElementsParser\RawCommand.cs" />
+    <Compile Include="ElementsParser\RawArgumentCommand.cs" />
     <Compile Include="ElementsParser\TextBodyParser.cs" />
     <Compile Include="Elements\Chapter.cs" />
     <Compile Include="Elements\ContentContext.cs" />
@@ -79,8 +80,8 @@
     <Compile Include="Elements\EnvironmentType.cs" />
     <Compile Include="Elements\Formatter.cs" />
     <Compile Include="Elements\FormatterCommand.cs" />
-    <Compile Include="Elements\Command.cs" />
-    <Compile Include="Elements\CommandType.cs" />
+    <Compile Include="Elements\ArgumentCommand.cs" />
+    <Compile Include="Elements\ArgumentCommandType.cs" />
     <Compile Include="Elements\Item.cs" />
     <Compile Include="Elements\Subsubsection.cs" />
     <Compile Include="Elements\Subsection.cs" />

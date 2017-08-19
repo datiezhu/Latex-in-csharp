@@ -8,7 +8,11 @@
             :base(message)
         {
             FailingCode = failingCodePart;
-            InArea = code.Substring(0, 100) + "...";
+
+            if (code.Length > 100)
+                InArea = code.Substring(0, 100) + "...";
+            else
+                InArea = code;
         }
 
         public string FailingCode { get; private set; }

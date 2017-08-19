@@ -11,31 +11,34 @@ using Moosetrail.LaTeX.Helpers;
 
 namespace Moosetrail.LaTeX.ElementsParser
 {
-    public class CommandParser : LaTeXElementParser, LaTexElementParser<Command>
+    public class ArgumentCommandParser : LaTeXElementParser, LaTexElementParser<ArgumentCommand>
     {
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
         /// </summary>
         public static IEnumerable<string> CodeIndicators { get; }
-        private static readonly IEnumerable<string> BeginCommands;
 
-        static CommandParser()
+        private static readonly IEnumerable<string> BeginCommands = new[]
         {
-            var beginCommands = new List<string>();
-            foreach (var command in EnumUtil.GetValues<CommandType>())
+            @"\\",
+            "\\\\",
+            @"\\\\"
+        };
+
+        static ArgumentCommandParser()
+        {
+            var codeIndicators = new List<string>();
+            foreach (var command in EnumUtil.GetValues<ArgumentCommandType>())
             {
-                beginCommands.Add(@"\\" + command);
-                beginCommands.Add("\\\\" + command);
-                beginCommands.Add(@"\\\\" + command);
+                codeIndicators.AddRange(BeginCommands.Select(beginCommand => beginCommand + command));
             }
-            BeginCommands = beginCommands;
-            CodeIndicators = new List<string>(BeginCommands);
+            CodeIndicators = codeIndicators;
         }
 
         /// <summary>
         /// Get all the code indicators that the element accepts as startingpoints to parse
         /// </summary>
-        IEnumerable<string> LaTexElementParser<Command>.CodeIndicators => CodeIndicators;
+        IEnumerable<string> LaTexElementParser<ArgumentCommand>.CodeIndicators => CodeIndicators;
 
         /// <summary>
         /// Parses the code given the object and sets the data to the object 
@@ -46,54 +49,80 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// A Tuple with the newly parsed object. The second object is a string with the parsed code removed from the code given as an argument to the function
         /// </returns>
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
-        public Tuple<Command, string> ParseCode(string code)
+        public Tuple<ArgumentCommand, string> ParseCode(string code)
         {
-            var commandMatch = Regex.Match(code, @"^\\([a-z]*)\[([0-9a-z,]*)\]{([a-z]*)}|^\\([a-z]*){([a-z]*)}");
-            var foundCommand = new RawCommand(commandMatch);
+            var commandMatch = Regex.Match(code, createPattern());
+            var foundCommand = new RawArgumentCommand(commandMatch);
 
-            var couldFindType = Enum.TryParse(foundCommand.CommandType, out CommandType commandType);
+            var couldFindType = Enum.TryParse(foundCommand.CommandType, out ArgumentCommandType commandType);
 
             if (!couldFindType)
-                throw new LaTeXParseCommandException(commandMatch.Value, code);
+                throw new LaTeXParseCommandException(commandMatch.Value, code, $"Didn't recognize the command {foundCommand.CommandType}");
 
-            RuleBook.TryGetValue(commandType, out CommandRules.CommandRules rules);
+            RuleBook.TryGetValue(commandType, out CommandRules.ArgumentCommandRules rules);
 
-            var command = new Command(
+            var command = new ArgumentCommand(
                 commandType, 
                 getRequriredArguments(rules, foundCommand, code),
                 getOptionalArguments(rules, foundCommand, code));
 
-            return Tuple.Create(command, code);
+            var updatedCode = code.Remove(0, foundCommand.FullCommand.Length);
+
+            return Tuple.Create(command, updatedCode);
         }
 
-        private static readonly Dictionary<CommandType, CommandRules.CommandRules> RuleBook = new Dictionary<CommandType, CommandRules.CommandRules>
+        private string createPattern()
         {
-            {CommandType.documentclass, new DocumentclassRules()}
+            var pattern = new StringBuilder();
+
+            foreach (var beginCommand in BeginCommands)
+            {
+                pattern.Append(@"^" + beginCommand + @"([a-zA-Z]*)\[([0-9a-zA-Z,]*)\]{([a-zA-Z]*)}");
+                pattern.Append("|");
+                pattern.Append(@"^" + beginCommand + "([a-zA-Z]*){([a-zA-Z]*)}");
+                pattern.Append("|");
+            }
+            pattern.Remove(pattern.Length - 1, 1);
+            return pattern.ToString();
+        }
+
+        private static readonly Dictionary<ArgumentCommandType, CommandRules.ArgumentCommandRules> RuleBook = new Dictionary<ArgumentCommandType, CommandRules.ArgumentCommandRules>
+        {
+            {ArgumentCommandType.documentclass, new DocumentclassRules()},
+            {ArgumentCommandType.usepackage, new UsepackageRules() }
         };
 
-        private static IEnumerable<string> getRequriredArguments(CommandRules.CommandRules rules, RawCommand rawCommand, string code)
+        private static IEnumerable<string> getRequriredArguments(CommandRules.ArgumentCommandRules rules, RawArgumentCommand rawArgumentCommand, string code)
         {
-            if(rules.AllowedRequiredArguments.Contains(rawCommand.RequriredArguments))
-                return new List<string> { rawCommand.RequriredArguments };
+            if(!rules.AllowedRequiredArguments.Any() || rules.AllowedRequiredArguments.Contains(rawArgumentCommand.RequriredArguments))
+                return new List<string> { rawArgumentCommand.RequriredArguments };
             else 
-                throw new LaTeXParseCommandException(rawCommand.FullCommand, code,
-                    $"The requrired argument '{rawCommand.RequriredArguments}' isn't a known argument for the command '{rawCommand.CommandType}'");
+                throw new LaTeXParseCommandException(rawArgumentCommand.FullCommand, code,
+                    $"The requrired argument '{rawArgumentCommand.RequriredArguments}' isn't a known argument for the command '{rawArgumentCommand.CommandType}'");
         }
 
-        private static IEnumerable<string> getOptionalArguments(CommandRules.CommandRules rules, RawCommand rawCommand, string code)
+        private static IEnumerable<string> getOptionalArguments(CommandRules.ArgumentCommandRules rules, RawArgumentCommand rawArgumentCommand, string code)
         {
             var arguments = new List<string>();
-            foreach (var rawArgument in getAllOptionalArguments(rawCommand))
+            foreach (var rawArgument in getAllOptionalArguments(rawArgumentCommand))
             {
-                var argumentRules = getArgumentRules(rules, rawArgument);
+                if (rules.OptionalArguments.Any())
+                {
+                    var argumentRules = getArgumentRules(rules, rawArgument);
 
-                if (argumentCantExistWithRequriredArguments(rawCommand, argumentRules))
-                {
-                    handleInvalidOptionalForRequriredArgument(rawCommand, rawArgument);
-                }
-                if (argumentCantCoexistWithOtherOptional(argumentRules, arguments))
-                {
-                    handleInvalidOptionalArgumentPair(rawCommand, argumentRules, arguments, rawArgument);
+                    if (argumentRules == null)
+                    {
+                        throw new LaTeXParseCommandException(rawArgumentCommand.FullCommand, code,
+                   $"The optional argument '{rawArgument}' isn't a known argument for the command '{rawArgumentCommand.CommandType}'");
+                    }
+                    if (argumentCantExistWithRequriredArguments(rawArgumentCommand, argumentRules))
+                    {
+                        handleInvalidOptionalForRequriredArgument(rawArgumentCommand, rawArgument);
+                    }
+                    if (argumentCantCoexistWithOtherOptional(argumentRules, arguments))
+                    {
+                        handleInvalidOptionalArgumentPair(rawArgumentCommand, argumentRules, arguments, rawArgument);
+                    }
                 }
 
                 arguments.Add(rawArgument);
@@ -102,29 +131,29 @@ namespace Moosetrail.LaTeX.ElementsParser
             return arguments;
         }
 
-        private static string[] getAllOptionalArguments(RawCommand rawCommand)
+        private static string[] getAllOptionalArguments(RawArgumentCommand rawArgumentCommand)
         {
-            return rawCommand.OptionalArguments
+            return rawArgumentCommand.OptionalArguments
                 .Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        private static Argument getArgumentRules(CommandRules.CommandRules rules, string rawArgument)
+        private static Argument getArgumentRules(CommandRules.ArgumentCommandRules rules, string rawArgument)
         {
             var matchingArgumentRules = rules.OptionalArguments.FirstOrDefault(rule => rule.IsMatch(rawArgument));
             return matchingArgumentRules;
         }
 
-        private static bool argumentCantExistWithRequriredArguments(RawCommand rawCommand, Argument matchingArgumentRules)
+        private static bool argumentCantExistWithRequriredArguments(RawArgumentCommand rawArgumentCommand, Argument matchingArgumentRules)
         {
             return matchingArgumentRules.NotAvailableForRequriredArguments.Any() &&
-                   matchingArgumentRules.NotAvailableForRequriredArguments.Contains(rawCommand.RequriredArguments) || matchingArgumentRules.AvailableForRequriredArguments.Any() && 
-                   !matchingArgumentRules.AvailableForRequriredArguments.Contains(rawCommand.RequriredArguments);
+                   matchingArgumentRules.NotAvailableForRequriredArguments.Contains(rawArgumentCommand.RequriredArguments) || matchingArgumentRules.AvailableForRequriredArguments.Any() && 
+                   !matchingArgumentRules.AvailableForRequriredArguments.Contains(rawArgumentCommand.RequriredArguments);
         }
 
-        private static void handleInvalidOptionalForRequriredArgument(RawCommand rawCommand, string rawArgument)
+        private static void handleInvalidOptionalForRequriredArgument(RawArgumentCommand rawArgumentCommand, string rawArgument)
         {
             throw new InvalidLatexCodeException(
-                $"The command '{rawCommand.CommandType}' with the requrired argument/s '{rawCommand.RequriredArguments}' can't have the optional argument of '{rawArgument}'");
+                $"The command '{rawArgumentCommand.CommandType}' with the requrired argument/s '{rawArgumentCommand.RequriredArguments}' can't have the optional argument of '{rawArgument}'");
         }
 
         private static bool argumentCantCoexistWithOtherOptional(Argument matchingArgumentRules, List<string> arguments)
@@ -132,13 +161,13 @@ namespace Moosetrail.LaTeX.ElementsParser
             return matchingArgumentRules.NotAvailableTogeterWithOtherOptionals.Any(x => arguments.Contains(x));
         }
 
-        private static void handleInvalidOptionalArgumentPair(RawCommand rawCommand, Argument matchingArgumentRules,
+        private static void handleInvalidOptionalArgumentPair(RawArgumentCommand rawArgumentCommand, Argument matchingArgumentRules,
             ICollection<string> arguments, string rawArgument)
         {
             var invalidOptional =
                 matchingArgumentRules.NotAvailableTogeterWithOtherOptionals.First(arguments.Contains);
             throw new InvalidLatexCodeException(
-                $"The command '{rawCommand.CommandType}' can't have the both the optional arguments of '{invalidOptional}' and '{rawArgument}'");
+                $"The command '{rawArgumentCommand.CommandType}' can't have the both the optional arguments of '{invalidOptional}' and '{rawArgument}'");
         }
 
         #region Depricated or to be depricated
@@ -187,7 +216,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// Gets an element, same as the ParseCode but without anything set, just an empty object
         /// </summary>
         /// <returns>A LatexObject</returns>
-        public Command GetEmptyElement()
+        public ArgumentCommand GetEmptyElement()
         {
             throw new NotSupportedException();
         }
@@ -199,7 +228,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// <param name="children">The elements to set</param>
         /// <exception cref="NotSupportedException">Thrown if the element isn't supported or the element doesn't support child items</exception>
         /// <exception cref="ArgumentException">Thrown if the any element in the list isn't a supported child element</exception>
-        public void SetChildElement(Command element, params LaTeXElement[] children)
+        public void SetChildElement(ArgumentCommand element, params LaTeXElement[] children)
         {
             throw new NotImplementedException();
         }
@@ -213,7 +242,7 @@ namespace Moosetrail.LaTeX.ElementsParser
         /// The newly parsed object. The string builder will also have been updted, the code parsed is removed
         /// </returns>
         /// <exception cref="ArgumentException">Thrown if the code string doesn't start with one of the accepted code indicators or the element isn't supported by the parser</exception>
-        public Command ParseCode(StringBuilder code)
+        public ArgumentCommand ParseCode(StringBuilder code)
         {
             throw new System.NotSupportedException();
         }
